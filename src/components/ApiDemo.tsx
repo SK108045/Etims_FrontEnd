@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
+import Image from "next/image";
 import {
   ArrowRight,
   Check,
@@ -8,7 +9,6 @@ import {
   Copy,
   LoaderCircle,
   Play,
-  QrCode,
   Terminal,
   Wifi,
   WifiOff,
@@ -228,7 +228,13 @@ export function ReceiptPreview() {
           <strong>INV-1042</strong>
           <span className="receipt-amount">KES 300.00</span>
         </div>
-        <QrCode size={47} strokeWidth={1.4} />
+        <Image
+          className="receipt-qr"
+          src="/demo-receipt-qr.svg"
+          width={76}
+          height={76}
+          alt="Demo receipt QR code — not a valid fiscal receipt"
+        />
       </div>
       <div className="receipt-footer">
         <span className="status-dot" /> Receipt + QR data, returned.

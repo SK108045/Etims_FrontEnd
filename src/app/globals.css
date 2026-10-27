@@ -882,11 +882,13 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   padding: 11px 15px;
 }
 .receipt-body > div {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 .receipt-label {
   font-size: 12px;
@@ -903,8 +905,13 @@ svg {
   color: #46594b;
   margin-top: 2px;
 }
-.receipt-body > svg {
-  color: #455b36;
+.receipt-qr {
+  display: block;
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+  background: #fff;
+  image-rendering: pixelated;
 }
 .receipt-footer {
   display: flex;
