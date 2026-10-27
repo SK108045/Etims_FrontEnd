@@ -987,7 +987,8 @@ svg {
   padding-top: 91px;
 }
 .integration-flow {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   padding: 54px 32px 39px;
   border: 1px solid var(--line);
@@ -997,11 +998,17 @@ svg {
   position: relative;
   overflow: hidden;
 }
+.flow-branch {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
 .flow-source-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   width: 325px;
+  min-width: 0;
 }
 .flow-source {
   display: flex;
@@ -1056,9 +1063,6 @@ svg {
   top: 50%;
   transform: translateY(-55%);
   font-size: 22px;
-}
-.wire-short {
-  max-width: 130px;
 }
 .wire-short > i {
   animation-delay: 1.5s;
@@ -3645,10 +3649,14 @@ svg {
     padding-bottom: 50px;
   }
   .integration-flow {
+    display: flex;
     flex-direction: column;
     padding: 27px 20px;
     margin-top: 30px;
     overflow: visible;
+  }
+  .flow-branch {
+    display: contents;
   }
   .flow-source-grid {
     width: 100%;

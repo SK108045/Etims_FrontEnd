@@ -20,22 +20,24 @@ const systems = [
 export default function IntegrationFlow() {
   return (
     <div className="integration-flow" data-reveal>
-      <div className="flow-source-grid">
-        {systems.map(({ icon: Icon, name }, i) => (
-          <div
-            className="flow-source"
-            key={name}
-            style={{ animationDelay: `${i * 0.3}s` }}
-          >
-            <Icon size={19} />
-            <span>{name}</span>
-          </div>
-        ))}
-      </div>
-      <div className="flow-wire">
-        <span />
-        <i />
-        <span />
+      <div className="flow-branch">
+        <div className="flow-source-grid">
+          {systems.map(({ icon: Icon, name }, i) => (
+            <div
+              className="flow-source"
+              key={name}
+              style={{ animationDelay: `${i * 0.3}s` }}
+            >
+              <Icon size={19} />
+              <span>{name}</span>
+            </div>
+          ))}
+        </div>
+        <div className="flow-wire">
+          <span />
+          <i />
+          <span />
+        </div>
       </div>
       <div className="flow-center">
         <div className="flow-logo">
@@ -50,24 +52,26 @@ export default function IntegrationFlow() {
         <strong>PawaTax API</strong>
         <span>YOUR FISCAL LAYER</span>
       </div>
-      <div className="flow-wire wire-short">
-        <span />
-        <i />
-        <span />
-      </div>
-      <div className="flow-output">
-        <div className="etims-node">
-          <CheckCheck size={26} />
-          <strong>eTIMS</strong>
-          <span>Fiscal processing</span>
+      <div className="flow-branch">
+        <div className="flow-wire wire-short">
+          <span />
+          <i />
+          <span />
         </div>
-        <div className="flow-results">
-          <span>
-            <FileText size={13} /> Invoice
-          </span>
-          <span>
-            <QrCode size={13} /> Receipt + QR
-          </span>
+        <div className="flow-output">
+          <div className="etims-node">
+            <CheckCheck size={26} />
+            <strong>eTIMS</strong>
+            <span>Fiscal processing</span>
+          </div>
+          <div className="flow-results">
+            <span>
+              <FileText size={13} /> Invoice
+            </span>
+            <span>
+              <QrCode size={13} /> Receipt + QR
+            </span>
+          </div>
         </div>
       </div>
     </div>
