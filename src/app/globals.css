@@ -1456,54 +1456,371 @@ svg {
   line-height: 1.9;
   margin-top: 12px;
 }
-.use-cases {
+/* Multi-merchant and branch hierarchy */
+.multi-merchant {
   background: #f8faf5;
-  border-block: 1px solid #edf0e7;
+  border-block: 1px solid #e4eadc;
   padding-block: 82px;
 }
-.use-cases h2 {
+.multi-merchant .section-heading {
+  max-width: 860px;
+}
+.multi-merchant .section-heading h2 {
   font-size: 42px;
 }
-.use-case-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 43px;
+.multi-merchant .section-heading p {
+  max-width: 660px;
+  font-size: 16px;
 }
-.use-case {
-  display: block;
+.merchant-diagram {
+  padding: 30px 28px 28px;
+  margin-top: 38px;
+  border: 1px solid #d7e1ce;
+  border-radius: 14px;
+  background: radial-gradient(ellipse at 50% 0%, #eaf3dd, #fff 65%);
+}
+.merchant-platform-root {
   position: relative;
-  padding: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 15px 23px;
+  border: 1px solid #a4bd8e;
+  border-radius: 10px;
   background: #fff;
-  border: 1px solid #e8eddf;
-  border-radius: 9px;
-  transition:
-    transform 0.2s,
-    border-color 0.2s;
+  box-shadow: 0 0 0 6px #e5eedb75;
 }
-.use-case:hover {
-  transform: translateY(-3px);
-  border-color: #adc698;
+.merchant-platform-root::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  height: 25px;
+  width: 1px;
+  background: #a9bf93;
 }
-.use-case > svg:first-child {
-  color: #769162;
+.merchant-platform-root::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  background: #80a859;
+  animation: merchant-flow 3s ease-in-out infinite;
 }
-.use-case h3 {
-  font-size: 17px;
+.merchant-platform-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--green);
+  color: var(--lime);
+}
+.merchant-platform-root strong {
+  display: block;
+  font-family: var(--heading);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.merchant-platform-root > div > span {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  color: #46554c;
+}
+.merchant-client-grid {
+  --merchant-gap: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--merchant-gap);
+  position: relative;
+  padding-top: 24px;
+  margin-top: 24px;
+}
+.merchant-client-grid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc((100% - 2 * var(--merchant-gap)) / 6);
+  right: calc((100% - 2 * var(--merchant-gap)) / 6);
+  height: 1px;
+  background: #a9bf93;
+}
+.merchant-client-card {
+  position: relative;
+  min-width: 0;
+  padding: 22px 20px 18px;
+  border: 1px solid #bacbad;
+  border-radius: 10px;
+  background: #fff;
+}
+.merchant-client-card::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -25px;
+  width: 1px;
+  height: 24px;
+  background: #a9bf93;
+}
+.merchant-client-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 21px;
+}
+.merchant-client-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: 1px solid #d6e1ca;
+  border-radius: 10px;
+  background: #f2f7e9;
+  color: var(--green);
+}
+.merchant-client-heading > div > span {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: #52624a;
+}
+.merchant-client-heading h3 {
+  margin-top: 4px;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+}
+.merchant-branch-list {
+  position: relative;
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: 10px;
+  margin: 0;
+  padding: 0 0 0 17px;
+  list-style: none;
+  border-left: 1px solid #bccdab;
+}
+.merchant-branch {
+  position: relative;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 5px 9px;
+  align-items: center;
+  min-height: 70px;
+  padding: 12px 13px;
+  border: 1px solid #bfceb1;
+  border-radius: 7px;
+  background: #f9fbf5;
+}
+.merchant-branch::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 50%;
+  width: 17px;
+  height: 1px;
+  background: #bccdab;
+}
+.merchant-branch > svg {
+  color: #5c7b49;
+}
+.merchant-branch strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+.merchant-branch > span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  grid-column: 2;
+  font-size: 13px;
+  color: #46554c;
+}
+.merchant-records {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-top: 17px;
+  margin-top: 18px;
+  border-top: 1px solid #e2e9d9;
+}
+.merchant-records > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #46554c;
+}
+.merchant-records svg {
+  color: #5c7b49;
+}
+.merchant-explanations {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+  margin-top: 32px;
+}
+.merchant-step-number {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+  color: var(--green);
+}
+.merchant-explanations h3 {
+  margin-top: 10px;
+  font-size: 18px;
   letter-spacing: -0.025em;
-  margin-top: 19px;
+  line-height: 1.4;
 }
-.use-case p {
+.merchant-explanations p {
+  margin-top: 9px;
   font-size: 16px;
   line-height: 1.8;
-  max-width: 240px;
-  margin-top: 10px;
 }
-.use-case .case-arrow {
-  position: absolute;
-  right: 23px;
-  top: 27px;
-  color: #46594b;
+@keyframes merchant-flow {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  25% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 23px);
+  }
+}
+@media (max-width: 850px) {
+  .merchant-diagram {
+    padding: 25px 18px 20px;
+  }
+  .merchant-client-grid {
+    --merchant-gap: 12px;
+  }
+  .merchant-client-card {
+    padding: 18px 13px;
+  }
+  .merchant-client-heading {
+    gap: 9px;
+  }
+  .merchant-client-mark {
+    width: 34px;
+    height: 34px;
+  }
+  .merchant-client-heading > div > span {
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  .merchant-client-heading h3 {
+    font-size: 18px;
+  }
+  .merchant-branch-list {
+    padding-left: 12px;
+  }
+  .merchant-branch {
+    padding: 11px 9px;
+    gap: 5px 6px;
+  }
+  .merchant-branch::before {
+    left: -13px;
+    width: 12px;
+  }
+  .merchant-explanations {
+    gap: 20px;
+  }
+}
+@media (max-width: 700px) {
+  .merchant-client-grid {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+    gap: 16px;
+  }
+  .merchant-client-grid::before,
+  .merchant-client-card::before {
+    display: none;
+  }
+  .merchant-platform-root::after {
+    animation: none;
+    transform: translateX(-50%);
+  }
+  .merchant-client-heading h3 {
+    font-size: 20px;
+  }
+  .merchant-client-card {
+    padding: 22px 20px;
+  }
+  .merchant-branch-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-left: 0;
+    border-left: 0;
+  }
+  .merchant-branch::before {
+    display: none;
+  }
+  .merchant-records {
+    gap: 12px 20px;
+  }
+  .merchant-explanations {
+    grid-template-columns: 1fr;
+    gap: 23px;
+  }
+  .merchant-explanations > div {
+    padding-top: 18px;
+    border-top: 1px solid #dce5d3;
+  }
+}
+@media (max-width: 640px) {
+  .multi-merchant {
+    padding-block: 60px;
+  }
+  .multi-merchant .section-heading h2 {
+    font-size: 34px;
+  }
+  .merchant-diagram {
+    padding: 22px 14px 15px;
+    margin-top: 28px;
+  }
+  .merchant-platform-root {
+    padding: 13px 14px;
+    gap: 10px;
+  }
+  .merchant-platform-mark {
+    width: 38px;
+    height: 38px;
+  }
+  .merchant-platform-root strong {
+    font-size: 18px;
+  }
+  .merchant-platform-root > div > span {
+    font-size: 12px;
+  }
+  .merchant-client-card {
+    padding: 20px 16px;
+  }
+  .merchant-branch {
+    padding: 12px 8px;
+    grid-template-columns: 16px minmax(0, 1fr);
+  }
+  .merchant-branch strong {
+    font-size: 14px;
+  }
+  .merchant-branch > span {
+    font-size: 12px;
+  }
 }
 .pricing-grid {
   display: grid;
@@ -3254,18 +3571,6 @@ svg {
   .step p {
     max-width: 210px;
   }
-  .use-case-grid {
-    gap: 12px;
-  }
-  .use-case {
-    padding: 22px;
-  }
-  .use-case p {
-    font-size: 16px;
-  }
-  .use-case h3 {
-    font-size: 16px;
-  }
   .pricing-card {
     padding: 27px 19px;
   }
@@ -4027,32 +4332,6 @@ svg {
     max-width: 100%;
     margin-top: 10px;
     padding-bottom: 20px;
-  }
-  .use-cases h2 {
-    font-size: 34px;
-  }
-  .use-case-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 11px;
-    margin-top: 28px;
-  }
-  .use-case {
-    padding: 20px 17px;
-  }
-  .use-case h3 {
-    font-size: 16px;
-    margin-top: 18px;
-  }
-  .use-case p {
-    font-size: 16px;
-  }
-  .use-case .case-arrow {
-    right: 15px;
-    top: 24px;
-    width: 13px;
-  }
-  .use-case > svg:first-child {
-    width: 22px;
   }
   .split-heading > .text-link {
     margin-top: 20px;

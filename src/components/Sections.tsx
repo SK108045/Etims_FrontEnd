@@ -8,13 +8,8 @@ import {
   FileCheck2,
   History,
   KeyRound,
-  Layers3,
-  Monitor,
   Receipt,
-  ShoppingBag,
-  Store,
   Users,
-  Utensils,
   WifiOff,
 } from "lucide-react";
 import { Button, Eyebrow, SectionTitle } from "./ui";
@@ -208,73 +203,6 @@ export function HowItWorks() {
             <p>{text}</p>
           </article>
         ))}
-      </div>
-    </section>
-  );
-}
-export function UseCases() {
-  const cases = [
-    {
-      icon: Monitor,
-      title: "POS developers",
-      text: "Add fiscal invoicing to the checkout experience you’ve already built.",
-    },
-    {
-      icon: Layers3,
-      title: "ERP platforms",
-      text: "Connect business operations to fiscal invoice processing.",
-    },
-    {
-      icon: Store,
-      title: "Retail systems",
-      text: "Give every store and branch its own place in one integration.",
-    },
-    {
-      icon: Utensils,
-      title: "Restaurants",
-      text: "Bring invoice and receipt data into your hospitality software.",
-    },
-    {
-      icon: ShoppingBag,
-      title: "E-commerce",
-      text: "Turn the online sale into a fiscal invoice from your backend.",
-    },
-    {
-      icon: Braces,
-      title: "Custom software",
-      text: "Built something different? All you need is an HTTP request.",
-    },
-  ];
-  return (
-    <section className="use-cases section">
-      <div className="container">
-        <SectionTitle
-          eyebrow="BUILD YOUR WAY"
-          title={
-            <>
-              Built for whatever
-              <br />
-              you’re building.
-            </>
-          }
-          centered
-          copy="From the neighbourhood shop to the next great platform."
-        />
-        <div className="use-case-grid">
-          {cases.map(({ icon: Icon, title, text }) => (
-            <Link
-              href="/products/"
-              className="use-case"
-              key={title}
-              data-reveal
-            >
-              <Icon size={24} strokeWidth={1.4} />
-              <h3>{title}</h3>
-              <p>{text}</p>
-              <ArrowUpRight className="case-arrow" size={17} />
-            </Link>
-          ))}
-        </div>
       </div>
     </section>
   );

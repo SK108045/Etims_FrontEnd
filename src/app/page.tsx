@@ -11,13 +11,13 @@ import {
 import { Button, CTA, SectionTitle } from "@/components/ui";
 import ApiDemo, { ReceiptPreview } from "@/components/ApiDemo";
 import IntegrationFlow from "@/components/IntegrationFlow";
+import MultiMerchantSection from "@/components/MultiMerchantSection";
 import {
   DeveloperSection,
   Features,
   HowItWorks,
   OfflineBanner,
   PricingPreview,
-  UseCases,
 } from "@/components/Sections";
 export default function Home() {
   return (
@@ -46,7 +46,8 @@ export default function Home() {
               </span>
             </h1>
             <p>
-              Connect your POS, ERP or app to fiscal invoicing with one simple API.
+              Connect your POS, ERP or app to fiscal invoicing with one simple
+              API.
             </p>
             <div className="button-row">
               <Button href="/developers/">Start Building</Button>
@@ -144,7 +145,7 @@ export default function Home() {
       <OfflineBanner />
       <DeveloperSection />
       <HowItWorks />
-      <UseCases />
+      <MultiMerchantSection />
       <PricingPreview />
       <CTA />
     </>
