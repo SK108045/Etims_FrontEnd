@@ -1,0 +1,537 @@
+.visual {
+  width: calc(100% + 48px);
+  margin: 38px -24px 0;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #d6e0cf;
+  border-radius: 14px;
+  color: #213b2b;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 17px 23px;
+  border-bottom: 1px solid #e6eddf;
+  background: #fcfdf9;
+}
+.requestLabel {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.requestLabel strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.requestLabel code {
+  font-size: 13px;
+  color: #52644a;
+}
+.requestDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5d9042;
+  box-shadow: 0 0 0 4px #eaf2df;
+}
+.credential {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border: 1px solid #d5e3c8;
+  border-radius: 5px;
+  font-size: 13px;
+  background: #f0f6e7;
+  color: #36582c;
+}
+.credential strong {
+  font-weight: 650;
+}
+.mobileHint {
+  display: none;
+}
+.scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #9fb68c #f4f8ee;
+}
+.scroller:focus-visible {
+  outline: 2px solid #6b9850;
+  outline-offset: -3px;
+}
+.canvas {
+  position: relative;
+  width: 100%;
+  min-width: 1120px;
+  height: 470px;
+  background-image: radial-gradient(#d4dfcc 0.65px, transparent 0.65px);
+  background-size: 26px 26px;
+}
+.wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.wires path {
+  vector-effect: non-scaling-stroke;
+}
+.laneDivider {
+  fill: none;
+  stroke: #e0e9d9;
+  stroke-width: 1;
+  stroke-dasharray: 3 7;
+}
+.alternateWires {
+  fill: none;
+  stroke: #cbdac1;
+  stroke-width: 1.35;
+  stroke-linecap: round;
+}
+.selectedWires {
+  fill: none;
+  stroke: #4a8658;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.returnWire {
+  fill: none;
+  stroke: #9dbb86;
+  stroke-width: 1.25;
+  stroke-dasharray: 5 6;
+}
+.outboundPacket {
+  opacity: 0;
+  animation: outbound-visibility 10s linear infinite;
+}
+.returnPacket {
+  opacity: 0;
+  animation: return-visibility 10s linear infinite;
+}
+.stageLabel {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 188px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  color: #52644b;
+}
+.stageLabel:first-child {
+  width: 160px;
+}
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+.client,
+.api,
+.fiscal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+}
+.clientIcon,
+.fiscalIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #bacdab;
+  border-radius: 18px;
+  background: #fff;
+  color: #456e38;
+}
+.clientIcon {
+  box-shadow: 0 5px 15px #284c1e06;
+}
+.apiIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border: 1px solid #245f3d;
+  border-radius: 21px;
+  background: #195c3d;
+  color: #d6f590;
+  box-shadow:
+    0 0 0 7px #e9f2e0,
+    0 8px 22px #214f2c13;
+  animation: api-pulse 10s ease-in-out infinite;
+}
+.nodeLabel {
+  position: absolute;
+  top: calc(100% + 11px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 175px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.nodeDetail {
+  position: absolute;
+  top: calc(100% + 39px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 185px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #52644a;
+  white-space: nowrap;
+}
+.merchant {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 148px;
+  height: 48px;
+  padding: 0 12px;
+  border: 1px solid #c5d4ba;
+  border-radius: 24px;
+  background: #fff;
+  color: #4c6342;
+}
+.merchant strong {
+  font-size: 14px;
+  font-weight: 550;
+  white-space: nowrap;
+}
+.lock {
+  margin-left: auto;
+  color: #728865;
+}
+.merchantScope {
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 215px;
+  text-align: center;
+  color: #53644b;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.branch {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 138px;
+  height: 48px;
+  padding: 0 13px;
+  border: 1px solid #c6d4bc;
+  border-radius: 8px;
+  background: #fff;
+  color: #506745;
+}
+.branch > div {
+  min-width: 0;
+}
+.branch strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 550;
+  white-space: nowrap;
+}
+.branch small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #53664a;
+  white-space: nowrap;
+}
+.selected {
+  border-color: #6d9856;
+  background: #eff7e7;
+  color: #1c5e36;
+  box-shadow: 0 0 0 4px #e9f2e066;
+}
+.selected strong {
+  font-weight: 700;
+}
+.selected .lock {
+  color: #56813e;
+}
+.selected small {
+  color: #375d2c;
+}
+.fiscalIcon {
+  border-color: #91b477;
+  background: #f9fcf5;
+  color: #51863a;
+}
+.invoice {
+  width: 160px;
+  height: 126px;
+  border: 1px solid #a7c28f;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 6px 20px #254f1b08;
+  overflow: hidden;
+  animation: invoice-success 10s ease-in-out infinite;
+}
+.invoiceHeading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 10px 8px;
+  color: #235c34;
+}
+.invoiceHeading strong {
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.invoiceHeading > svg:last-child {
+  margin-left: auto;
+}
+.invoiceBody {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 0 10px 8px;
+}
+.invoiceBody strong {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 600;
+}
+.invoiceBody span {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #4e6145;
+  white-space: nowrap;
+}
+.invoiceBody img {
+  display: block;
+  flex-shrink: 0;
+  background: #fff;
+  image-rendering: pixelated;
+}
+.invoiceStatus {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 9px;
+  border-top: 1px solid #e2ecd8;
+  background: #f0f7e7;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+  color: #315f29;
+}
+.invoiceStatus > span {
+  margin-left: auto;
+  font-family: var(--font);
+  font-size: 12px;
+}
+.returnLabel {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px;
+  border: 1px solid #dde8d2;
+  border-radius: 20px;
+  background: #fff;
+  color: #45673a;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.returnLabel strong {
+  color: #2e6232;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 600;
+}
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 23px;
+  padding: 15px 20px;
+  border-top: 1px solid #e6eddf;
+  background: #fcfdf9;
+}
+.legend > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #465c3d;
+}
+.legend svg {
+  color: #62834e;
+}
+.activeLegend,
+.alternateLegend {
+  position: relative;
+  display: inline-block;
+  width: 22px;
+  height: 2px;
+  background: #4a8658;
+}
+.activeLegend::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4a8658;
+}
+.alternateLegend {
+  height: 1px;
+  background: #b9cbae;
+}
+@keyframes outbound-visibility {
+  0%,
+  6% {
+    opacity: 0;
+  }
+  8%,
+  54% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes return-visibility {
+  0%,
+  62% {
+    opacity: 0;
+  }
+  64%,
+  94% {
+    opacity: 1;
+  }
+  96%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes api-pulse {
+  0%,
+  8%,
+  27%,
+  100% {
+    box-shadow:
+      0 0 0 7px #e9f2e0,
+      0 8px 22px #214f2c13;
+  }
+  14%,
+  20% {
+    box-shadow:
+      0 0 0 12px #dfedce,
+      0 8px 25px #214f2c20;
+  }
+}
+@keyframes invoice-success {
+  0%,
+  49%,
+  100% {
+    border-color: #bdcfac;
+    box-shadow: 0 6px 20px #254f1b08;
+  }
+  56%,
+  90% {
+    border-color: #6b9b4d;
+    box-shadow:
+      0 0 0 6px #eaf3df,
+      0 7px 24px #254f1b12;
+  }
+}
+@media (max-width: 1100px) {
+  .visual {
+    width: 100%;
+    margin-inline: 0;
+  }
+  .mobileHint {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 20px;
+    border-bottom: 1px solid #e6eddf;
+    color: #49613f;
+    font-size: 13px;
+    background: #fff;
+  }
+}
+@media (max-width: 640px) {
+  .visual {
+    margin-top: 28px;
+    border-radius: 11px;
+  }
+  .toolbar {
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 10px;
+  }
+  .requestLabel {
+    gap: 8px 10px;
+  }
+  .requestLabel strong {
+    font-size: 14px;
+  }
+  .requestLabel code {
+    padding-left: 16px;
+    flex-basis: 100%;
+  }
+  .credential {
+    font-size: 13px;
+  }
+  .legend {
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+  .legend > span {
+    flex-basis: 100%;
+    font-size: 13px;
+  }
+  .returnLabel {
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .outboundPacket,
+  .returnPacket {
+    display: none;
+    animation: none;
+  }
+  .apiIcon,
+  .invoice {
+    animation: none;
+  }
+}

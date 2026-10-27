@@ -1,15 +1,6 @@
-import {
-  Building2,
-  FileText,
-  KeyRound,
-  Layers3,
-  Store,
-  Users,
-} from "lucide-react";
 import { SectionTitle } from "./ui";
+import MerchantRoutingVisual from "./MerchantRoutingVisual";
 
-const merchants = ["Merchant A", "Merchant B", "Merchant C"];
-const branches = ["Branch 01", "Branch 02"];
 const explanations = [
   {
     number: "01",
@@ -47,66 +38,7 @@ export default function MultiMerchantSection() {
           copy="Connect many client businesses through one integration. Each merchant has its own branches and customer records, with separate credentials for every branch."
         />
 
-        <div
-          className="merchant-diagram"
-          role="group"
-          aria-label="PawaTax connects multiple merchants, each with its own branches"
-          data-reveal
-        >
-          <div className="merchant-platform-root">
-            <span className="merchant-platform-mark">
-              <Layers3 size={24} strokeWidth={1.6} />
-            </span>
-            <div>
-              <strong>PawaTax API</strong>
-              <span>One integration for your software</span>
-            </div>
-          </div>
-
-          <div className="merchant-client-grid">
-            {merchants.map((merchant) => (
-              <article
-                className="merchant-client-card"
-                key={merchant}
-                aria-label={merchant}
-              >
-                <div className="merchant-client-heading">
-                  <span className="merchant-client-mark">
-                    <Building2 size={22} strokeWidth={1.6} />
-                  </span>
-                  <div>
-                    <span>CLIENT BUSINESS</span>
-                    <h3>{merchant}</h3>
-                  </div>
-                </div>
-
-                <ul
-                  className="merchant-branch-list"
-                  aria-label={`${merchant} branches`}
-                >
-                  {branches.map((branch) => (
-                    <li className="merchant-branch" key={branch}>
-                      <Store size={17} strokeWidth={1.5} />
-                      <strong>{branch}</strong>
-                      <span>
-                        <KeyRound size={13} /> Own API key
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="merchant-records">
-                  <span>
-                    <FileText size={14} /> Invoice history
-                  </span>
-                  <span>
-                    <Users size={14} /> Customer records
-                  </span>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+        <MerchantRoutingVisual />
 
         <div className="merchant-explanations">
           {explanations.map(({ number, title, text }) => (
