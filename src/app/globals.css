@@ -264,32 +264,6 @@ svg {
   top: 10px;
 }
 /* Navigation */
-.announcement {
-  height: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 13px;
-  background: #f0f5e9;
-  color: #5a6d53;
-  font-size: 14px;
-  border-bottom: 1px solid #e8eddf;
-}
-.announcement-badge {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  border: 1px solid #d6e3c9;
-  padding: 1px 7px;
-  border-radius: 3px;
-}
-.announcement a {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: 600;
-  color: #2e583d;
-}
 .site-header {
   position: sticky;
   top: 0;
@@ -3451,24 +3425,6 @@ svg {
   }
   .container {
     width: calc(100% - 40px);
-  }
-  .announcement {
-    gap: 7px;
-    font-size: 12px;
-    height: auto;
-    min-height: 34px;
-    padding: 5px 12px;
-    flex-wrap: wrap;
-  }
-  .announcement-badge {
-    font-size: 12px;
-    padding: 1px 4px;
-  }
-  .announcement > a {
-    font-size: 12px;
-  }
-  .announcement > span:nth-child(2) {
-    display: none;
   }
   .hero-inner {
     display: flex;

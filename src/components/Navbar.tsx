@@ -51,13 +51,6 @@ export default function Navbar() {
   }, []);
   return (
     <>
-      <div className="announcement">
-        <span className="announcement-badge">BUILT FOR KENYA</span>
-        <span>Your next integration just got simpler.</span>
-        <Link href="/developers/">
-          Meet the PawaTax API <ArrowUpRight size={13} />
-        </Link>
-      </div>
       <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
         <nav
           className="nav container"
