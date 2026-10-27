@@ -479,7 +479,7 @@ svg {
 }
 /* Hero */
 .hero {
-  --hero-code-height: 250px;
+  --hero-code-height: 310px;
   position: relative;
   overflow: hidden;
   background: linear-gradient(120deg, #fff 8%, #fafbf7 50%, #f0f5e7 100%);
@@ -728,6 +728,9 @@ svg {
   overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: #688468 transparent;
+}
+.hero .code-container pre {
+  line-height: 1.6;
 }
 .code-container pre {
   margin: 0;
@@ -2715,7 +2718,7 @@ svg {
 /* Responsive */
 @media (min-width: 1500px) {
   .hero {
-    --hero-code-height: 272px;
+    --hero-code-height: 330px;
   }
   .hero h1 {
     font-size: 72px;
@@ -2825,7 +2828,7 @@ svg {
 }
 @media (max-width: 850px) {
   .hero {
-    --hero-code-height: 220px;
+    --hero-code-height: 310px;
   }
   .container {
     width: calc(100% - 48px);
@@ -2881,7 +2884,7 @@ svg {
   }
   .hero .code-container pre {
     font-size: 14px;
-    line-height: 2.1;
+    line-height: 1.6;
   }
   .hero .line-number {
     width: 28px;
@@ -3433,7 +3436,7 @@ svg {
 }
 @media (max-width: 640px) {
   .hero {
-    --hero-code-height: 245px;
+    --hero-code-height: 320px;
   }
   .container {
     width: calc(100% - 40px);
@@ -3524,7 +3527,7 @@ svg {
   }
   .hero .code-container pre {
     font-size: 14px;
-    line-height: 2;
+    line-height: 1.6;
   }
   .hero .code-container {
     padding-block: 15px 20px;
