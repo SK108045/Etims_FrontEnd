@@ -979,7 +979,8 @@ svg {
 }
 .flow-source-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 12px;
   width: 325px;
   min-width: 0;
@@ -988,7 +989,8 @@ svg {
   display: flex;
   align-items: center;
   gap: 11px;
-  border: 1px solid #e5eadd;
+  min-height: 64px;
+  border: 2px solid #9aad90;
   border-radius: 7px;
   background: #fff;
   padding: 14px 12px;
@@ -1000,7 +1002,11 @@ svg {
 }
 .flow-source:hover {
   transform: translateY(-3px);
-  border-color: #9fbd84;
+  border-color: var(--green);
+}
+.flow-source > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .flow-source svg {
   color: #71866a;
@@ -3616,7 +3622,7 @@ svg {
   }
   .flow-source-grid {
     width: 100%;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 9px;
   }
   .flow-source {
