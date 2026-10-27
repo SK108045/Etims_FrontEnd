@@ -497,7 +497,7 @@ svg {
   display: grid;
   grid-template-columns: 1.08fr 1fr;
   gap: 44px;
-  padding-block: 66px 76px;
+  padding-block: 36px 76px;
 }
 .hero-copy {
   animation: fade-up 0.7s both;
@@ -2735,7 +2735,7 @@ svg {
     font-size: 72px;
   }
   .hero-inner {
-    padding-block: 88px 90px;
+    padding-block: 48px 90px;
   }
   .hero-visual {
     padding-top: 56px;
@@ -2760,7 +2760,7 @@ svg {
   }
   .hero-inner {
     gap: 30px;
-    padding-block: 58px 65px;
+    padding-block: 32px 65px;
   }
   .hero h1 {
     font-size: 55px;
@@ -2863,7 +2863,7 @@ svg {
   .hero-inner {
     grid-template-columns: 1fr 1fr;
     gap: 22px;
-    padding-top: 48px;
+    padding-top: 28px;
     padding-bottom: 55px;
   }
   .hero h1 {
@@ -3474,7 +3474,7 @@ svg {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding-block: 40px 30px;
+    padding-block: 24px 30px;
   }
   .hero-copy {
     max-width: 100%;
