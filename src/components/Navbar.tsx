@@ -66,6 +66,17 @@ export default function Navbar() {
         >
           <Logo />
           <div className={`nav-links ${mobile ? "mobile-open" : ""}`}>
+            <Link
+              href="/"
+              className={pathname === "/" ? "active" : ""}
+              aria-current={pathname === "/" ? "page" : undefined}
+              onClick={() => {
+                setMobile(false);
+                setProducts(false);
+              }}
+            >
+              Home
+            </Link>
             <div className="product-nav">
               <button
                 className={pathname.startsWith("/products") ? "active" : ""}
