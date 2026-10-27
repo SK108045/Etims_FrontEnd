@@ -158,6 +158,7 @@ export default function Navbar() {
       <dialog
         ref={dialog}
         className="access-dialog"
+        aria-labelledby="early-access-title"
         onClick={(e) => {
           if (e.target === e.currentTarget) dialog.current?.close();
         }}
@@ -173,7 +174,7 @@ export default function Navbar() {
           <Code2 />
         </span>
         <EyebrowLocal />
-        <h2>
+        <h2 id="early-access-title">
           A little early.
           <br />A lot to build.
         </h2>
