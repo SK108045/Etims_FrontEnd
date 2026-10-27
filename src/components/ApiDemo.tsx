@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Check,
@@ -224,8 +225,8 @@ export function ReceiptPreview() {
       </div>
       <div className="receipt-body">
         <div>
-          <span className="receipt-label">FISCAL INVOICE</span>
-          <strong>INV-1042</strong>
+          <span className="receipt-label">CU INVOICE NO</span>
+          <strong>DEMO-INV-1042</strong>
           <span className="receipt-amount">KES 300.00</span>
         </div>
         <Image
@@ -236,9 +237,18 @@ export function ReceiptPreview() {
           alt="Demo receipt QR code — not a valid fiscal receipt"
         />
       </div>
-      <div className="receipt-footer">
-        <span className="status-dot" /> Receipt + QR data, returned.
-      </div>
+      <dl className="receipt-fiscal-bits">
+        <div>
+          <dt>Receipt ref</dt>
+          <dd>DEMO-REF-1042</dd>
+        </div>
+      </dl>
+      <Link className="receipt-footer" href="/products/api/#receipt-output">
+        <span className="receipt-footer-label">
+          <span className="status-dot" /> View receipt details
+        </span>
+        <ArrowRight size={12} />
+      </Link>
     </div>
   );
 }
