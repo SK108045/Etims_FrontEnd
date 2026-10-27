@@ -846,12 +846,6 @@ svg {
   align-items: center;
   justify-content: center;
 }
-.receipt-demo {
-  margin-left: auto;
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  color: #46594b;
-}
 .receipt-body {
   display: flex;
   align-items: center;

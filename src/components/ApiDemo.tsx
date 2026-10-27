@@ -221,12 +221,11 @@ export function ReceiptPreview() {
           <Check size={13} />
         </span>
         <span>Invoice, meet fiscal.</span>
-        <span className="receipt-demo">DEMO</span>
       </div>
       <div className="receipt-body">
         <div>
           <span className="receipt-label">CU INVOICE NO</span>
-          <strong>DEMO-INV-1042</strong>
+          <strong>INV-1042</strong>
           <span className="receipt-amount">KES 300.00</span>
         </div>
         <Image
@@ -234,13 +233,13 @@ export function ReceiptPreview() {
           src="/demo-receipt-qr.svg"
           width={76}
           height={76}
-          alt="Demo receipt QR code — not a valid fiscal receipt"
+          alt="Receipt QR code"
         />
       </div>
       <dl className="receipt-fiscal-bits">
         <div>
           <dt>Receipt ref</dt>
-          <dd>DEMO-REF-1042</dd>
+          <dd>REF-1042</dd>
         </div>
       </dl>
       <Link className="receipt-footer" href="/products/api/#receipt-output">
