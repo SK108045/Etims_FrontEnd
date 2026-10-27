@@ -33,11 +33,9 @@ export default function Home() {
               <ArrowUpRight size={14} />
             </Link>
             <h1>
-              eTIMS integration, <br />
-              without the <br />
+              eTIMS integration. <br />
               <span className="headline-accent">
-                integration
-                <br className="desktop-break" /> headache.
+                Simplified.
                 <svg
                   viewBox="0 0 390 17"
                   preserveAspectRatio="none"
@@ -48,9 +46,7 @@ export default function Home() {
               </span>
             </h1>
             <p>
-              Connect your POS, ERP or application to fiscal invoicing through
-              one simple REST API. We handle the infrastructure.{" "}
-              <strong>You focus on the sale.</strong>
+              Connect your POS, ERP or app to fiscal invoicing with one simple API.
             </p>
             <div className="button-row">
               <Button href="/developers/">Start Building</Button>
