@@ -2333,6 +2333,132 @@ svg {
   margin-block: 20px 30px;
   font-size: 16px;
 }
+/* Fiscal receipt output example */
+.fiscal-receipt-example {
+  margin: 0;
+  padding: 28px;
+  border: 1px solid #d8e1d0;
+  border-radius: 12px;
+  background: #f6f8f2;
+  min-width: 0;
+}
+.fiscal-receipt-paper {
+  width: 100%;
+  max-width: 390px;
+  margin-inline: auto;
+  padding: 25px 24px;
+  background: #fffefa;
+  border: 1px solid #e0e4d9;
+  border-radius: 3px;
+  box-shadow: 0 8px 24px #1835210a;
+  color: #23332a;
+}
+.fiscal-receipt-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #adb7a4;
+}
+.fiscal-receipt-top > span:first-child {
+  font-family: var(--heading);
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+}
+.fiscal-receipt-top > span:last-child {
+  font-size: 12px;
+  font-weight: 600;
+  color: #52624a;
+  letter-spacing: 0.05em;
+}
+.fiscal-receipt-paper h3 {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  margin-bottom: 18px;
+}
+.fiscal-receipt-fields {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.fiscal-receipt-fields > div {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 12px;
+  margin-block: 7px;
+}
+.fiscal-receipt-fields dt {
+  color: #46554c;
+}
+.fiscal-receipt-fields dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.fiscal-receipt-qr {
+  display: block;
+  width: 148px;
+  height: 148px;
+  margin: 22px auto 16px;
+  background: #fff;
+  image-rendering: pixelated;
+}
+.fiscal-receipt-demo-note {
+  border-top: 1px dashed #adb7a4;
+  padding-top: 15px;
+  text-align: center;
+  font-size: 12px;
+  color: #52624a;
+  line-height: 1.7;
+}
+.fiscal-receipt-example figcaption {
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.7;
+  color: #46554c;
+  margin-top: 18px;
+}
+.receipt-output-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+  padding: 0;
+  margin: 25px 0;
+  list-style: none;
+  font-size: 15px;
+  color: #46554c;
+}
+.receipt-output-fields li::before {
+  content: "✓";
+  color: var(--green);
+  margin-right: 8px;
+}
+.docs-section > .receipt-output-note {
+  margin-top: 20px;
+  font-size: 14px;
+}
+@media (max-width: 640px) {
+  .fiscal-receipt-example {
+    padding: 16px;
+  }
+  .fiscal-receipt-paper {
+    padding: 21px 16px;
+  }
+  .fiscal-receipt-fields > div {
+    gap: 8px;
+  }
+  .receipt-output-fields {
+    gap: 12px;
+    font-size: 14px;
+  }
+}
 /* Documentation */
 .docs-layout {
   display: grid;

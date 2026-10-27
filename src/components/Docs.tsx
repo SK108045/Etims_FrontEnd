@@ -10,11 +10,13 @@ import {
   FileJson,
   Info,
   KeyRound,
+  Receipt,
   Search,
   Terminal,
   WifiOff,
 } from "lucide-react";
 import ApiDemo, { Highlight } from "./ApiDemo";
+import FiscalReceiptExample from "./FiscalReceiptExample";
 const topics = [
   {
     id: "quickstart",
@@ -35,6 +37,12 @@ const topics = [
     id: "response",
     title: "Invoice response",
     description: "Fiscal invoice, receipt and QR information.",
+  },
+  {
+    id: "receipt-output",
+    title: "Receipt output",
+    description:
+      "CU serial, CU invoice, receipt reference, date and QR example.",
   },
   {
     id: "integration-notes",
@@ -96,6 +104,9 @@ export default function Docs() {
         </a>
         <a href="#response">
           <FileJson /> Invoice response
+        </a>
+        <a href="#receipt-output">
+          <Receipt /> Receipt output
         </a>
         <a href="#integration-notes">
           <Code2 /> Integration notes
@@ -262,6 +273,20 @@ export default function Docs() {
             encoding and rendering requirements with the production integration
             contract; the word <code>generated</code> is an illustrative
             placeholder.
+          </p>
+        </section>
+        <section className="docs-section" id="receipt-output">
+          <h2>From fiscal data to receipt.</h2>
+          <p>
+            A receipt’s control unit block brings together the CU serial number,
+            CU invoice number, receipt reference and date, followed by the QR
+            code. Here’s an illustrative layout using sample values.
+          </p>
+          <FiscalReceiptExample />
+          <p className="receipt-output-note">
+            This is a display example, not an API response schema. Confirm the
+            exact field mapping and timestamp format against your production
+            integration before rendering a live receipt.
           </p>
         </section>
         <section className="docs-section" id="integration-notes">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { FileCheck2, KeyRound, Building2 } from "lucide-react";
 import { Button, CTA, Eyebrow, PageHero } from "@/components/ui";
 import ApiDemo from "@/components/ApiDemo";
+import FiscalReceiptExample from "@/components/FiscalReceiptExample";
 import { Features, HowItWorks } from "@/components/Sections";
 export const metadata: Metadata = {
   title: "Invoicing API",
@@ -77,6 +78,36 @@ export default function ApiPage() {
             </div>
           ))}
         </div>
+      </section>
+      <section
+        className="two-col-section container receipt-output-section"
+        id="receipt-output"
+      >
+        <div data-reveal>
+          <Eyebrow>THE RECEIPT, MADE CONCRETE</Eyebrow>
+          <h2>
+            What your receipt
+            <br />
+            <span className="muted-heading">can look like.</span>
+          </h2>
+          <p>
+            Control unit details and QR data, together in one readable receipt
+            block. Your software can present them in the receipt experience
+            you’ve built for your customers.
+          </p>
+          <ul className="receipt-output-fields">
+            <li>CU serial number</li>
+            <li>CU invoice number</li>
+            <li>Receipt reference</li>
+            <li>Date and QR code</li>
+          </ul>
+          <div className="button-row">
+            <Button href="/developers/#receipt-output" secondary>
+              Explore receipt output
+            </Button>
+          </div>
+        </div>
+        <FiscalReceiptExample />
       </section>
       <Features />
       <HowItWorks />
