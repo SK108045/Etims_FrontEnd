@@ -1,6 +1,6 @@
 {
   "public": "out",
-  "cleanUrls": false,
+  "cleanUrls": true,
   "directoryListing": false,
   "headers": [
     {
