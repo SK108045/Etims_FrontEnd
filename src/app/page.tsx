@@ -12,9 +12,9 @@ import { Button, CTA, SectionTitle } from "@/components/ui";
 import ApiDemo, { ReceiptPreview } from "@/components/ApiDemo";
 import IntegrationFlow from "@/components/IntegrationFlow";
 import MultiMerchantSection from "@/components/MultiMerchantSection";
+import InvoiceOutputSection from "@/components/InvoiceOutputSection";
 import {
   DeveloperSection,
-  Features,
   HowItWorks,
   OfflineBanner,
   PricingPreview,
@@ -141,7 +141,7 @@ export default function Home() {
           </span>
         </div>
       </section>
-      <Features />
+      <InvoiceOutputSection />
       <OfflineBanner />
       <DeveloperSection />
       <HowItWorks />
