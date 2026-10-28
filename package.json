@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
-    "start": "serve out --listen 3000 --no-clipboard --no-port-switching",
-    "preview": "serve out --no-clipboard --no-port-switching",
+    "start": "serve --config serve.json --listen 3000 --no-clipboard --no-port-switching",
+    "preview": "serve --config serve.json --no-clipboard --no-port-switching",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
