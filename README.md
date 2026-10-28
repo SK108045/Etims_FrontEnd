@@ -11,9 +11,16 @@ npm run dev
 
 Open http://localhost:3000.
 
-`npm run dev` compiles pages on demand and runs development checks. The first
-visit to a route can be noticeably slower than the built website. Use the
-production preview below when reviewing navigation speed.
+`npm run dev` starts Next.js with hot reload, then prepares the static pages
+sequentially. Wait for the `pages prepared. Hot reload is active.` message before
+reviewing navigation; the initial compilation happens during this startup step
+instead of on the first click of each link. Normal edits still update through
+Fast Refresh without rebuilding the site. CLI options pass through to Next.js,
+for example `npm run dev -- --port 3002`.
+
+Turbopack's persistent development cache is disabled to avoid expensive cache
+reads and writes on slow disks. Compilation stays in memory during the session;
+each restart prepares pages again. Production build caching is unchanged.
 
 ## Production
 

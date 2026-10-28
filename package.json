@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0",
+    "dev": "node scripts/dev.mjs",
     "build": "next build",
     "start": "serve --config serve.json --listen 3000 --no-clipboard --no-port-switching",
     "preview": "serve --config serve.json --no-clipboard --no-port-switching",
