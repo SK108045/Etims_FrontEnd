@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Motion from "@/components/Motion";
 import "./globals.css";
+const bodyFont = localFont({
+  src: "./fonts/dm-sans-latin.woff2",
+  variable: "--font-dm-sans",
+  weight: "400 700",
+  display: "swap",
+});
+const headingFont = localFont({
+  src: "./fonts/manrope-latin.woff2",
+  variable: "--font-manrope",
+  weight: "400 800",
+  display: "swap",
+});
 export const metadata: Metadata = {
   metadataBase: new URL("https://pawatax.allanben678.chatgpt.site"),
   title: {
@@ -39,7 +51,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${bodyFont.variable} ${headingFont.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <body>
         <a href="#main-content" className="skip-link">
           Skip to content
@@ -47,7 +63,6 @@ export default function RootLayout({
         <Navbar />
         <main id="main-content">{children}</main>
         <Footer />
-        <Motion />
       </body>
     </html>
   );
