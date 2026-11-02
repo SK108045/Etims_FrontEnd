@@ -2603,6 +2603,52 @@ svg {
   font-size: 16px;
   padding: 10px;
 }
+.sdk-guide {
+  max-width: 1000px;
+  padding-bottom: 85px;
+}
+.sdk-setup-steps {
+  display: grid;
+  gap: 18px;
+  padding-left: 24px;
+  margin-block: 24px;
+  font-size: 16px;
+  line-height: 1.9;
+}
+.sdk-guide .api-demo { margin-block: 28px; }
+.docs-table-scroll { overflow-x: auto; max-width: 100%; }
+.docs-table-scroll .docs-table { min-width: 620px; }
+.docs-table-scroll td code { overflow-wrap: anywhere; }
+.code-block { margin-block: 20px; overflow: hidden; }
+.code-block-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid #ffffff26;
+  font-size: 12px;
+  color: #d4e6bd;
+}
+.code-block-toolbar > span:first-child { margin-right: auto; }
+.code-block-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #a9c58e;
+  border-radius: 5px;
+  padding: 6px 10px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.code-block pre { overflow-x: auto; white-space: pre; }
+.api-demo .demo-tabs { overflow-x: auto; }
+.api-demo .demo-tabs > button { flex-shrink: 0; }
+.api-demo .code-container { max-height: 520px; overflow: auto; }
+.api-demo .code-container:has(.response-success) { padding-bottom: 50px; }
+.sdk-guide .docs-section > p + p,
+.docs-main .docs-section > p + p { margin-top: 16px; }
 .docs-main {
   min-width: 0;
   max-width: 800px;

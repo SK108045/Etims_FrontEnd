@@ -35,8 +35,8 @@ export default function Contact() {
             },
             {
               icon: WifiOff,
-              title: "Help shape the offline SDK",
-              text: "Tell us where and how your devices operate.",
+              title: "Integrate Windows Local",
+              text: "Connect your existing Windows POS through localhost REST.",
             },
           ].map(({ icon: Icon, title, text }) => (
             <div className="contact-point" key={title}>

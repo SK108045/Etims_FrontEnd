@@ -50,19 +50,19 @@ export default function Products() {
         </article>
         <article className="product-card product-card-sdk" data-reveal>
           <WifiOff size={35} strokeWidth={1.3} />
-          <Eyebrow>UPCOMING · THE OFFLINE CONNECTION</Eyebrow>
+          <Eyebrow>WINDOWS x64 / THE LOCAL CONNECTION</Eyebrow>
           <h2>
             Less signal.
             <br />
             Same ambition.
           </h2>
           <p>
-            We’re developing an SDK for applications that need to keep working
-            through connection gaps. Explore the local queue and reconnect
-            experience we’re designing.
+            Run PawaTax Local as a Windows service behind your existing POS.
+            Sign invoices locally, online or offline, and synchronize the
+            already-signed results to your dashboard.
           </p>
           <Button href="/products/offline-sdk/" secondary>
-            Meet the offline SDK
+            Explore Windows Local
           </Button>
         </article>
       </section>

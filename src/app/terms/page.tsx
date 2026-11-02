@@ -36,9 +36,9 @@ export default function Terms() {
         <p>
           The invoicing API is described according to the supplied product
           architecture. Production access requires onboarding and verification
-          of the live API contract. The offline SDK is in development; its
-          release date, supported platforms and final behavior are not
-          announced.
+          of the live API contract. The Windows x64 Local runtime is available through the PawaTax portal
+          for activated branches. The public API hostname and commercial rollout
+          must be configured separately. Android and Linux runtimes are not included.
         </p>
         <h2>Pricing and commercial terms</h2>
         <p>

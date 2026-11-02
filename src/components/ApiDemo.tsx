@@ -14,15 +14,7 @@ import {
   Wifi,
   WifiOff,
 } from "lucide-react";
-const languages = ["cURL", "Node.js", "Python", "PHP"] as const;
-type Language = (typeof languages)[number];
-const examples: Record<Language, string> = {
-  cURL: `curl -X POST https://api.pawatax.com/v1/invoices \\\n  -H "Authorization: Bearer pawa_test_…" \\\n  -H "Content-Type: application/json" \\\n  -d '{\n    "receipt_no": "INV-1042",\n    "customer": { "name": "Demo Customer", "pin": "NA" },\n    "items": [{\n      "name": "Paint Brush",\n      "quantity": 2,\n      "unit_price": 150.00\n    }]\n  }'`,
-  "Node.js": `const response = await fetch(\n  "https://api.pawatax.com/v1/invoices", {\n    method: "POST",\n    headers: {\n      Authorization: \`Bearer \${process.env.PAWATAX_API_KEY}\`,\n      "Content-Type": "application/json"\n    },\n    body: JSON.stringify(invoice)\n  }\n);\n\nconst fiscalInvoice = await response.json();`,
-  Python: `import os\nimport requests\n\nresponse = requests.post(\n    "https://api.pawatax.com/v1/invoices",\n    headers={\n        "Authorization": f"Bearer {os.environ['PAWATAX_API_KEY']}"\n    },\n    json=invoice\n)\n\nfiscal_invoice = response.json()`,
-  PHP: `$client = new GuzzleHttp\\Client();\n\n$response = $client->post(\n  'https://api.pawatax.com/v1/invoices', [\n    'headers' => [\n      'Authorization' => 'Bearer ' . getenv('PAWATAX_API_KEY')\n    ],\n    'json' => $invoice\n  ]\n);\n\n$fiscalInvoice = json_decode($response->getBody());`,
-};
-const responseCode = `{\n  "status": "success",\n  "invoice_number": "KRACU0100544492/1042",\n  "receipt_signature": "CTQOVY2POPW5LIQN",\n  "qr_code": "generated"\n}`;
+import { baseUrls, languages, invoiceExample, invoiceResponse, type Language, type SigningMode } from "@/lib/integration";
 export function Highlight({ code }: { code: string }) {
   return (
     <>
@@ -60,13 +52,16 @@ export function Highlight({ code }: { code: string }) {
     </>
   );
 }
-export default function ApiDemo({ large = false }: { large?: boolean }) {
+export default function ApiDemo({ large = false, mode = "cloud" }: { large?: boolean; mode?: SigningMode }) {
   const instanceId = useId();
   const [language, setLanguage] = useState<Language>("cURL");
   const [phase, setPhase] = useState<"request" | "sending" | "response">(
     "request",
   );
-  const [copied, setCopied] = useState(false);
+  const [copiedCode, setCopiedCode] = useState("");
+  const [copyError, setCopyError] = useState(false);
+  const code = phase === "response" ? invoiceResponse(mode) : invoiceExample(language, mode);
+  const copied = copiedCode === code;
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
@@ -84,13 +79,15 @@ export default function ApiDemo({ large = false }: { large?: boolean }) {
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(
-        phase === "response" ? responseCode : examples[language],
+        code,
       );
-      setCopied(true);
+      setCopiedCode(code);
+      setCopyError(false);
       if (copyTimer.current) clearTimeout(copyTimer.current);
-      copyTimer.current = setTimeout(() => setCopied(false), 1800);
+      copyTimer.current = setTimeout(() => setCopiedCode(""), 1800);
     } catch {
-      setCopied(false);
+      setCopyError(true);
+      setCopiedCode("");
     }
   };
   return (
@@ -104,7 +101,7 @@ export default function ApiDemo({ large = false }: { large?: boolean }) {
         <span>
           <Terminal size={13} /> your next integration
         </span>
-        <span className="demo-tag">SANDBOX</span>
+        <span className="demo-tag">{mode === "cloud" ? "CLOUD API" : "WINDOWS LOCAL"}</span>
       </div>
       <div className="demo-tabs" role="tablist" aria-label="Code language">
         {languages.map((l) => (
@@ -158,7 +155,7 @@ export default function ApiDemo({ large = false }: { large?: boolean }) {
         <span>POST</span>
         <code>/v1/invoices</code>
         <span className="endpoint-lock">
-          Bearer auth <span>↗</span>
+          X-API-Key <span>↗</span>
         </span>
       </div>
       <div
@@ -171,15 +168,15 @@ export default function ApiDemo({ large = false }: { large?: boolean }) {
         <pre>
           <code>
             <Highlight
-              code={phase === "response" ? responseCode : examples[language]}
+              code={code}
             />
           </code>
         </pre>
         {phase === "response" && (
           <div className="response-success">
             <CheckCheck size={16} />
-            <span>200 OK</span>
-            <span>Sample response</span>
+            <span>201 Created</span>
+            <span>Response excerpt</span>
           </div>
         )}
       </div>
@@ -208,7 +205,11 @@ export default function ApiDemo({ large = false }: { large?: boolean }) {
         </button>
       </div>
       <span className="demo-disclaimer">
-        Illustrative sandbox · No live API request
+        Interactive example · No live API request
+        <br />
+        {mode === "cloud" ? "Development cloud: " : "Activated merchant PC: "}{baseUrls[mode]}
+        {language === "PowerShell" && <><br />Windows PowerShell: paste the whole block. Use JSON Unicode escapes for non-ASCII text on PowerShell 5.1.</>}
+        {copyError && <span role="status"> Copy unavailable. Select the code to copy it.</span>}
       </span>
     </div>
   );
@@ -255,15 +256,18 @@ export function OfflineDemo() {
   const [online, setOnline] = useState(true);
   const [queued, setQueued] = useState(0);
   const [sent, setSent] = useState(0);
+  const [created, setCreated] = useState(0);
   return (
     <div className="offline-demo">
       <div className="offline-demo-top">
-        <span className="mono">CONNECTION SIMULATOR</span>
+        <span className="mono">LOCAL SIGNING SIMULATOR</span>
         <button
           className={`connection-toggle ${online ? "online" : ""}`}
+          aria-pressed={online}
+          aria-label="Internet connection"
           onClick={() => {
             if (!online) {
-              setSent(sent + queued);
+              setSent(value => value + queued);
               setQueued(0);
             }
             setOnline(!online);
@@ -285,30 +289,35 @@ export function OfflineDemo() {
         </h3>
         <p>
           {online
-            ? "Switch to offline, queue a few invoices, then reconnect."
-            : "Your example invoices stay in the local queue."}
+            ? "Sign locally in either mode. Disconnect to see the sync queue grow."
+            : "Already-signed invoices wait locally for cloud acknowledgement."}
         </p>
         <button
           className="button"
-          onClick={() => (online ? setSent(sent + 1) : setQueued(queued + 1))}
+          onClick={() => {
+            setCreated(value => value + 1);
+            if (online) setSent(value => value + 1);
+            else setQueued(value => value + 1);
+          }}
         >
-          Create sample invoice <ArrowRight size={16} />
+          Sign sample invoice <ArrowRight size={16} />
         </button>
       </div>
+      <p className="small-note" aria-live="polite">{created} sample invoices signed locally; {queued} awaiting sync; {sent} cloud acknowledged.</p>
       <div className="offline-counters">
         <div>
           <strong>{queued.toString().padStart(2, "0")}</strong>
-          <span>QUEUED LOCALLY</span>
+          <span>AWAITING CLOUD SYNC</span>
         </div>
         <ArrowRight />
         <div>
           <strong>{sent.toString().padStart(2, "0")}</strong>
-          <span>EXAMPLE SYNCED</span>
+          <span>CLOUD ACKNOWLEDGED</span>
         </div>
       </div>
       <p className="small-note">
-        Interactive concept demo. The offline SDK is in development. No invoices
-        are submitted.
+        Illustration only: no fiscal invoices are created or sent. Real sync retries
+        use backoff; cloud acknowledgement is separate from manual KRA submission.
       </p>
     </div>
   );

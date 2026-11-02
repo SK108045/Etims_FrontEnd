@@ -136,7 +136,7 @@ export function DeveloperSection() {
               <Check size={13} /> JSON responses
             </span>
             <span>
-              <Check size={13} /> Bearer authentication
+              <Check size={13} /> X-API-Key authentication
             </span>
             <span>
               <Check size={13} /> Multi-tenant
@@ -189,8 +189,8 @@ export function HowItWorks() {
           },
           {
             n: "03",
-            title: "Make it fiscal.",
-            text: "Get fiscal invoice information and receipt data back for your customer.",
+            title: "Signed, saved, ready to review.",
+            text: "Get signed invoice and receipt data. Review in the portal and send to KRA manually.",
             icon: Receipt,
           },
         ].map(({ n, title, text, icon: Icon }) => (
@@ -315,11 +315,11 @@ export function OfflineBanner() {
         <span />
       </div>
       <div>
-        <span className="mono tiny">ON THE ROADMAP</span>
+        <span className="mono tiny">WINDOWS LOCAL RUNTIME</span>
         <h3>The sale shouldn’t stop when the signal does.</h3>
         <p>
-          Meet the offline SDK we’re building for connected and disconnected
-          devices.
+          Sign invoices on the merchant Windows PC, online or offline.
+          Completed invoices sync to the dashboard when connected.
         </p>
       </div>
       <Link href="/products/offline-sdk/" className="text-link">

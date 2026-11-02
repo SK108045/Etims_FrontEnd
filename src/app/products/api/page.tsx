@@ -21,7 +21,7 @@ export default function ApiPage() {
             <span>To a fiscal invoice.</span>
           </>
         }
-        copy="One REST endpoint connects your software to fiscal processing. Work in your own stack, send normal JSON, and build the receipt experience your customers need."
+        copy="One API key and your invoice JSON. PawaTax resolves the registered branch and device, signs the invoice immediately and saves it in the dashboard for review and manual KRA submission."
       >
         <div className="button-row">
           <Button href="/developers/#quickstart">Read the quickstart</Button>
@@ -42,13 +42,13 @@ export default function ApiPage() {
             <span className="muted-heading">The fiscal layer is ours.</span>
           </h2>
           <p>
-            Your application submits the invoice. PawaTax handles the fiscal
-            workflow and returns the information needed to generate a receipt in
-            your software.
+            Your application submits the sale through POST /v1/invoices. PawaTax
+            signs and saves it, then returns the data your software needs for a receipt.
           </p>
           <p>
-            Keep your checkout, your business logic and your customer
-            experience. Add the fiscal connection behind the scenes.
+            For a Windows Local branch, use port 17500 with the same request JSON.
+            Its activated PC remains the signing owner while online or offline;
+            cloud creation is blocked for that branch.
           </p>
         </div>
         <div className="principle-list">
@@ -56,17 +56,17 @@ export default function ApiPage() {
             {
               icon: KeyRound,
               title: "Authenticate by branch",
-              text: "Use a Bearer API key associated with the right merchant branch.",
+              text: "Send X-API-Key. The key selects the existing merchant, branch, device and environment.",
             },
             {
               icon: FileCheck2,
               title: "Return the receipt essentials",
-              text: "Work with fiscal invoice numbers, receipt signatures and QR data.",
+              text: "Receive HTTP 201 with the signed invoice, signature and verification URL. KRA acceptance is a later step.",
             },
             {
               icon: Building2,
-              title: "Keep merchant accounts distinct",
-              text: "Build for multiple businesses with separate merchant and branch contexts.",
+              title: "Retry without signing twice",
+              text: "Use a unique external_id per sale. Retrying the same invoice returns its original fiscal result.",
             },
           ].map(({ icon: Icon, title, text }) => (
             <div className="principle" key={title} data-reveal>

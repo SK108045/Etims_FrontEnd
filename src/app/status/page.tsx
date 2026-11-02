@@ -50,7 +50,7 @@ export default function Status() {
             name: "Merchant portal",
             status: "Private development",
           },
-          { icon: WifiOff, name: "Offline SDK", status: "In development" },
+          { icon: WifiOff, name: "Windows Local runtime", status: "Available through the portal" },
         ].map(({ icon: Icon, name, status }) => (
           <div className="status-row" key={name}>
             <span>
@@ -61,7 +61,7 @@ export default function Status() {
           </div>
         ))}
         <p>
-          These labels describe this preview and the product roadmap. They are
+          These labels describe this website and product availability. They are
           not uptime measurements, an incident feed or a service-level
           commitment.
         </p>

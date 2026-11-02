@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 
 const topics = [
+  { id: "environments", title: "Cloud or Windows Local", description: "Base URLs, port 17400, port 17500 and signing ownership." },
+  { id: "endpoints", title: "Read and sync", description: "Invoice history, branch, local status, QR and synchronization routes." },
   {
     id: "quickstart",
     title: "Quickstart",
@@ -11,7 +13,7 @@ const topics = [
   {
     id: "authentication",
     title: "Authentication",
-    description: "Branch credentials and Bearer API keys.",
+    description: "Branch-bound X-API-Key, viewing and revocation.",
   },
   {
     id: "api-reference",
@@ -32,7 +34,7 @@ const topics = [
   {
     id: "integration-notes",
     title: "Integration notes",
-    description: "Credentials, connectivity and example data.",
+    description: "Idempotency, duplicate protection, errors and crash recovery.",
   },
 ];
 export default function DocsSearch() {

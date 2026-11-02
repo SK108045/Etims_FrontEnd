@@ -47,7 +47,7 @@ Home, platform, invoicing API, offline SDK, developer guide, pricing, company, c
 
 - Accessible product dropdown, mobile navigation and native early-access dialog.
 - Language-switching API demo with copy, simulated processing and sample response.
-- Offline concept simulator with a local queue and reconnect behavior.
+- Offline signing/sync illustration, plus Windows activation and localhost API walkthrough.
 - Documentation topic search and anchor navigation.
 - Pricing FAQ accordions.
 - Validated integration brief form and downloadable text file.
@@ -55,7 +55,11 @@ Home, platform, invoicing API, offline SDK, developer guide, pricing, company, c
 
 ## Production integration boundaries
 
-The repository supplied only `Design.txt`, with no product backend or SDK source. The API examples are illustrative, not live requests. The `api.pawatax.com` hostname is representative, not a runtime dependency. The offline SDK is labelled in development. Pricing is not final. Sign-in explains the preview state. The contact form generates a local file and does not send email, persist a lead or join a real waitlist. The status page does not claim live API health. Replace these preview flows with verified backend services before commercial onboarding.
+The API and Windows Local guides mirror the current PawaTax implementation. Shared request payloads and language examples live in `src/lib/integration.ts`; `ApiDemo` presents copyable Bash curl, Windows PowerShell, Node.js, Python and PHP examples. Interactive examples simulate responses locally and never create fiscal invoices.
+
+Cloud development uses `http://127.0.0.1:17400`; Windows Local uses `http://127.0.0.1:17500`. `https://api.pawatax.co.ke` is the planned hosted origin, not a claim of a live public API. This static Vercel website does not host the fiscal gateway or runtime download. Download Windows x64 through the authenticated portal. Activation uses the existing branch API key and makes that PC the sole signing owner. Sync imports already-signed results separately from invoice creation; KRA submission remains manual in the portal.
+
+The site sign-in dialog and integration-brief form remain informational preview flows. Pricing is not final. The contact form downloads a local brief and does not send email. The status page is not connected to live telemetry.
 
 DM Sans and Manrope are bundled locally as variable WOFF2 fonts through
 `next/font/local`, with preloading and fallback metrics. Visitors do not need to

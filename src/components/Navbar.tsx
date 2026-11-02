@@ -102,9 +102,9 @@ export default function Navbar() {
                     <WifiOff />
                     <span>
                       <strong>
-                        Offline SDK <b className="mini-badge">UPCOMING</b>
+                        Offline SDK <b className="mini-badge">WINDOWS x64</b>
                       </strong>
-                      <small>Keep going beyond the connection.</small>
+                      <small>Sign locally. Sync when connected.</small>
                     </span>
                     <ArrowUpRight size={15} />
                   </Link>

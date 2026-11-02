@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: "Is the offline SDK included?",
-    a: "The offline SDK is in development. Availability, supported platforms and commercial details will be confirmed when the product is ready.",
+    a: "The Windows x64 Local runtime is downloaded through the portal and uses a branch API key for activation. Commercial plans and pricing are still to be confirmed. Android and Linux runtimes are not included.",
   },
   {
     q: "Can I try the API examples?",

@@ -103,7 +103,7 @@ export default function Home() {
               <Code2 size={17} /> Your favourite stack
             </span>
             <span>
-              <Zap size={17} /> Online + offline roadmap
+              <Zap size={17} /> Cloud + Windows Local
             </span>
           </div>
         </div>
