@@ -211,55 +211,61 @@ export function PricingCards() {
   const tiers = [
     {
       name: "Developer",
-      label: "For your first integration",
-      price: "Coming soon",
-      body: "Start exploring the API and plan your integration.",
+      label: "For individual developers",
+      price: "KES 1.50 / invoice",
+      body: "Start with 10 production invoices on us. After that, pay only when PawaTax successfully issues an invoice.",
       items: [
-        "Developer integration guide",
-        "Example requests & responses",
-        "Explore the fiscal workflow",
+        "First 10 production invoices free",
+        "No setup fee or monthly fee",
+        "Failed requests & safe retries are free",
+        "Online API + Windows Local API",
       ],
-      cta: "Explore the docs",
+      cta: "Start building",
       href: "/developers/",
+      featured: true,
     },
     {
       name: "Business",
-      label: "For your everyday operations",
-      price: "Coming soon",
-      body: "For software that powers merchants and branches.",
+      label: "For growing software teams",
+      price: "Custom",
+      body: "For higher-volume integrations, multiple merchants and teams that want rollout support.",
       items: [
-        "Fiscal invoice processing",
-        "Merchant & branch accounts",
-        "Invoice & customer history",
+        "Volume-based pricing",
+        "Multiple merchants & branches",
+        "Integration and rollout support",
+        "Online + offline workflows",
       ],
-      cta: "Register your interest",
+      cta: "Talk to us",
       href: "/contact/?interest=business",
+      featured: false,
     },
     {
       name: "Enterprise",
-      label: "For your bigger picture",
+      label: "For platforms at scale",
       price: "Let’s talk",
-      body: "Plan for your platform, your volume and your rollout.",
+      body: "Shape PawaTax around your transaction volume, branch footprint and support requirements.",
       items: [
-        "Discuss your API volume",
-        "Plan a multi-branch rollout",
-        "Talk through integration needs",
+        "High-volume commercial terms",
+        "Multi-branch rollout planning",
+        "Priority integration support",
+        "Custom deployment requirements",
       ],
       cta: "Contact Sales",
       href: "/contact/?interest=enterprise",
+      featured: false,
     },
   ];
   return (
     <div className="pricing-grid">
-      {tiers.map((t, i) => (
+      {tiers.map((t) => (
         <article
-          className={`pricing-card ${i === 1 ? "pricing-featured" : ""}`}
+          className={`pricing-card ${t.featured ? "pricing-featured" : ""}`}
           key={t.name}
           data-reveal
         >
-          {i === 1 && (
+          {t.featured && (
             <span className="pricing-label">
-              BUILT TO GROW WITH YOU <ArrowUpRight size={13} />
+              10 PRODUCTION INVOICES FREE <ArrowUpRight size={13} />
             </span>
           )}
           <div className="pricing-tier">
@@ -276,7 +282,7 @@ export function PricingCards() {
               </li>
             ))}
           </ul>
-          <Button href={t.href} secondary={i !== 1}>
+          <Button href={t.href} secondary={!t.featured}>
             {t.cta}
           </Button>
         </article>
@@ -289,18 +295,18 @@ export function PricingPreview() {
     <section className="section container">
       <div className="split-heading">
         <SectionTitle
-          eyebrow="A PLAN FOR YOUR NEXT CHAPTER"
+          eyebrow="PRICING WITHOUT THE CEREMONY"
           title={
             <>
-              Simple pricing.
+              Start free.
               <br />
-              <span className="muted-heading">Room to grow.</span>
+              <span className="muted-heading">Pay when you issue.</span>
             </>
           }
-          copy="We’re shaping plans around real businesses. Final pricing is on the way."
+          copy="Your first 10 production invoices are free. After that, individual developers pay KES 1.50 per successfully issued invoice — no setup fee and no monthly fee."
         />
         <Link href="/pricing/" className="text-link">
-          Explore plans <ArrowUpRight size={17} />
+          See pricing <ArrowUpRight size={17} />
         </Link>
       </div>
       <PricingCards />

@@ -2,59 +2,62 @@ import type { Metadata } from "next";
 import { Plus } from "lucide-react";
 import { CTA, PageHero, SectionTitle } from "@/components/ui";
 import { PricingCards } from "@/components/Sections";
+
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Explore the upcoming Developer, Business and Enterprise plans for PawaTax.",
+    "Start with 10 production invoices free, then pay KES 1.50 per successfully issued invoice with PawaTax.",
 };
+
 const faqs = [
   {
-    q: "Are these plans available today?",
-    a: "Final plans and prices have not been published. This is a preview of how we’re thinking about different integration needs. Explore the developer guide now, or prepare an integration brief to register your interest.",
+    q: "How does Developer pricing work?",
+    a: "There is no setup fee and no monthly fee. Your first 10 production invoices are free. After that, individual developers pay KES 1.50 for each invoice PawaTax successfully issues.",
   },
   {
-    q: "What will pricing be based on?",
-    a: "We’re considering API usage, invoices processed, number of branches and enterprise volume. These are potential billing dimensions, rather than final plan limits or commitments.",
+    q: "What counts as a billable invoice?",
+    a: "A successfully issued production fiscal invoice counts toward usage. Validation errors, failed requests and safe idempotent retries are not separate billable invoices.",
   },
   {
-    q: "Can I integrate multiple merchants?",
-    a: "The platform architecture supports multiple merchant accounts and branches, with per-branch API credentials. Talk to us about the shape of your integration before planning a rollout.",
+    q: "Do I pay just to test the integration?",
+    a: "No. You can explore the documentation and browser-based examples without creating fiscal invoices. Your first 10 production invoices are also free when you are ready to go live.",
   },
   {
-    q: "Is the offline SDK included?",
-    a: "The Windows x64 Local runtime is downloaded through the portal and uses a branch API key for activation. Commercial plans and pricing are still to be confirmed. Android and Linux runtimes are not included.",
+    q: "Is the Windows Local API included?",
+    a: "Yes. The Windows x64 Local runtime uses the same branch API key and is included for supported developer integrations. It can issue locally while offline and synchronize completed invoices when connectivity returns.",
   },
   {
-    q: "Can I try the API examples?",
-    a: "Yes. The interactive examples across this site run locally in your browser. They demonstrate the request and response shape without sending real data or creating fiscal invoices.",
+    q: "What if I have multiple merchants or higher volume?",
+    a: "Talk to us. Business and Enterprise pricing is shaped around invoice volume, merchant and branch count, rollout requirements and support needs rather than forcing every integration into the individual developer rate.",
   },
 ];
+
 export default function Pricing() {
   return (
     <>
       <PageHero
-        eyebrow="A PLAN FOR YOUR NEXT CHAPTER"
+        eyebrow="SIMPLE FROM INVOICE ONE"
         title={
           <>
-            Simple pricing.
+            Start free.
             <br />
-            <span>Room to grow.</span>
+            <span>Pay as you issue.</span>
           </>
         }
-        copy="From your first integration to your next branch. We’re shaping plans around real businesses, and final pricing is on the way."
+        copy="No setup fee. No monthly fee for individual developers. Your first 10 production invoices are free, then it’s KES 1.50 per successfully issued invoice."
       />
       <section className="pricing-page container">
         <PricingCards />
         <p className="pricing-note">
-          Potential billing dimensions include API usage, invoices processed,
-          branches and enterprise volume. Final prices, limits and availability
-          are not yet announced.
+          Developer usage is charged on successfully issued production invoices,
+          not failed requests or safe retries. Business and Enterprise pricing
+          is quoted separately for larger rollouts and higher volume.
         </p>
       </section>
       <section className="faq-section container">
         <SectionTitle
-          eyebrow="A FEW THINGS TO KNOW"
-          title="Good questions. Clear answers."
+          eyebrow="STRAIGHT ANSWERS"
+          title="No pricing gymnastics."
         />
         {faqs.map((f) => (
           <details className="faq-item" key={f.q}>
