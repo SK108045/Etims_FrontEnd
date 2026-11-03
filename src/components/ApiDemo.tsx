@@ -101,7 +101,7 @@ export default function ApiDemo({ large = false, mode = "cloud" }: { large?: boo
         <span>
           <Terminal size={13} /> your next integration
         </span>
-        <span className="demo-tag">{mode === "cloud" ? "CLOUD API" : "WINDOWS LOCAL"}</span>
+        <span className="demo-tag">{mode === "sandbox" ? "PAWATAX SANDBOX" : mode === "cloud" ? "CLOUD API" : "WINDOWS LOCAL"}</span>
       </div>
       <div className="demo-tabs" role="tablist" aria-label="Code language">
         {languages.map((l) => (
@@ -207,7 +207,9 @@ export default function ApiDemo({ large = false, mode = "cloud" }: { large?: boo
       <span className="demo-disclaimer">
         Interactive example · No live API request
         <br />
-        {mode === "cloud" ? "Development cloud: " : "Activated merchant PC: "}{baseUrls[mode]}
+        {mode === "local" ? "Activated merchant PC: " : "Development gateway: "}{baseUrls[mode]}
+        {mode === "sandbox" && <><br />Use a pawa_test_* key from Sandbox in your user portal. All receipt values are simulated.</>}
+        {(language === "Node.js" || language === "Python" || language === "PHP") && <><br />Set PAWATAX_API_KEY in your application environment before running.</>}
         {language === "PowerShell" && <><br />Windows PowerShell: paste the whole block. Use JSON Unicode escapes for non-ASCII text on PowerShell 5.1.</>}
         {copyError && <span role="status"> Copy unavailable. Select the code to copy it.</span>}
       </span>

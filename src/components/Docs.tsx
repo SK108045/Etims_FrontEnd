@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, BookOpen, Braces, Code2, FileJson, KeyRound, Receipt, WifiOff } from "lucide-react";
+import { ArrowUpRight, BookOpen, Box, Braces, Code2, FileJson, KeyRound, Receipt, WifiOff } from "lucide-react";
 import ApiDemo from "./ApiDemo";
 import CodeBlock from "./CodeBlock";
 import FiscalReceiptExample from "./FiscalReceiptExample";
@@ -44,9 +44,10 @@ export default function Docs() {
     <div className="docs-layout container">
       <aside className="docs-sidebar">
         <DocsSearch />
-        <div className="docs-version"><span>v1</span> CLOUD + WINDOWS LOCAL</div>
+        <div className="docs-version"><span>v1</span> SANDBOX + CLOUD + LOCAL</div>
         <div className="docs-label">GET STARTED</div>
         <a href="#quickstart"><BookOpen /> Quickstart</a>
+        <a href="#sandbox"><Box /> Developer sandbox</a>
         <a href="#authentication"><KeyRound /> API keys</a>
         <a href="#environments"><Code2 /> Choose a base URL</a>
         <div className="docs-label">API REFERENCE</div>
@@ -61,64 +62,76 @@ export default function Docs() {
       <article className="docs-main">
         <div className="docs-breadcrumb">Documentation / Integration guide</div>
         <h1>Your API key. Your invoice.</h1>
-        <p className="docs-lead">Send one JSON request from your POS, ERP or backend. PawaTax resolves the registered branch and device from the API key, signs the invoice and saves it for review.</p>
-        <div className="docs-notice"><FileJson /><p><strong>Signed is a separate step from KRA acceptance.</strong> HTTP 201 means the invoice is signed and saved. It appears in the dashboard with <code>kra_status: pending_submission</code>. A portal user reviews it and chooses Send to KRA.</p></div>
+        <p className="docs-lead">Send one JSON request from your POS, ERP or backend. Your API key resolves the assigned branch and device. Start with a simulated sandbox invoice, then use the same request format with a live cloud or Windows Local branch.</p>
+        <div className="docs-notice"><FileJson /><p><strong>Use a test key while building.</strong> Sandbox returns simulated results with <code>kra_status: not_applicable</code>. With a live key, HTTP 201 means signed and saved, separate from KRA acceptance. The live invoice appears in the dashboard with <code>kra_status: pending_submission</code>. A portal user reviews it and chooses Send to KRA.</p></div>
 
         <section className="docs-section" id="quickstart">
           <h2>Your first invoice.</h2>
           <div className="docs-steps">
-            <div><span>01</span><h3>Copy a branch API key</h3><p>In the portal, open Developer Access for a branch with captured device credentials.</p></div>
-            <div><span>02</span><h3>Send the sale</h3><p>Choose your terminal below. Replace YOUR_API_KEY and use a unique external_id.</p></div>
-            <div><span>03</span><h3>Review in the dashboard</h3><p>Keep the returned invoice ID. KRA transmission is a manual portal action.</p></div>
+            <div><span>01</span><h3>Create a sandbox key</h3><p>Sign in to your user portal, open Sandbox and choose Create sandbox &amp; API key. No KRA onboarding is needed.</p></div>
+            <div><span>02</span><h3>Send the sale</h3><p>Choose your terminal below. Replace pawa_test_YOUR_API_KEY and use a unique external_id.</p></div>
+            <div><span>03</span><h3>Inspect your test receipt</h3><p>Open Sandbox invoices &amp; receipts, then Preview receipt. Test invoices never go to KRA.</p></div>
           </div>
-          <ApiDemo large />
+          <ApiDemo large mode="sandbox" />
           <p>The cURL tab is for Bash. The PowerShell tab sends readable JSON through standard input to one <code>curl.exe</code> request. Application examples include the complete payload; Node.js, Python and PHP read <code>PAWATAX_API_KEY</code> from your process environment.</p>
+        </section>
+
+        <section className="docs-section" id="sandbox">
+          <h2>Sandbox lives in your user portal.</h2>
+          <p>Existing merchants use their normal PawaTax login. New users without a KRA PIN can choose <strong>Create Account &gt; Testing first - no KRA PIN yet</strong>. Open <strong>Sandbox</strong> in the sidebar and choose <strong>Create sandbox &amp; API key</strong>.</p>
+          <p>A <code>pawa_test_*</code> key selects an internal test merchant, virtual branch and device. It makes no KRA calls, registers no real device and uses no production credentials or counters. Test history stays separate from live invoices.</p>
+          <p>The API origin and <code>/v1/invoices</code> contract are shared with cloud live. Your key selects the provider; no sandbox flag or KRA Sandbox URL is needed. Test receipts are marked <strong>SANDBOX / NOT A KRA FISCAL RECEIPT</strong> and their QR codes point to PawaTax.</p>
+          <Link className="text-link" href="/developers/sandbox/">Sandbox walkthrough, code and retry checks <ArrowUpRight size={16} /></Link>
         </section>
 
         <section className="docs-section" id="authentication">
           <h2>One key selects the branch.</h2>
-          <p>Use <code>X-API-Key</code> on every request. No account login, access-token exchange or branch lookup is needed before creating an invoice. The key fixes the merchant, branch, existing registered device, credential fingerprint and environment.</p>
+          <p>Use <code>X-API-Key</code> on every request. No account login, access-token exchange or branch lookup is needed before creating an invoice. The key selects the merchant, branch, device and environment: a virtual test device for pawa_test_* and a verified registered device for pawa_live_*.</p>
           <CodeBlock label="Request headers" code={'X-API-Key: YOUR_API_KEY\nContent-Type: application/json'} />
-          <p>Generate and revoke integration keys in Developer Access. To view a retained key again, choose View API key and enter the signed-in account password. Older hash-only keys require a matching retained copy; otherwise create a replacement and reactivate the same Windows installation without resetting fiscal state.</p>
+          <p>Generate and revoke test keys in Sandbox, and live branch keys in Developer Access. To view a retained key again, choose View API key and enter the signed-in account password. Older hash-only keys require a matching retained copy; otherwise create a replacement and reactivate the same Windows installation without resetting fiscal state.</p>
           <p>Keep keys out of source control and public browser bundles. Use your backend or native POS HTTP client. The Local API rejects browser Origin requests by default. Legacy Bearer authentication remains supported.</p>
         </section>
 
         <section className="docs-section" id="environments">
           <h2>Same request. The right signing location.</h2>
           <div className="docs-table-scroll"><table className="docs-table"><thead><tr><th>MODE</th><th>BASE URL</th><th>SIGNING OWNER</th></tr></thead><tbody>
-            <tr><td>Cloud development</td><td><code>http://127.0.0.1:17400</code></td><td>PawaTax gateway; requires connectivity.</td></tr>
+            <tr><td>PawaTax Sandbox / pawa_test_*</td><td><code>http://127.0.0.1:17400</code></td><td>Internal simulation, with no KRA or native signing.</td></tr>
+            <tr><td>Live cloud development / pawa_live_*</td><td><code>http://127.0.0.1:17400</code></td><td>PawaTax gateway; requires connectivity.</td></tr>
             <tr><td>Windows Local</td><td><code>http://127.0.0.1:17500</code></td><td>The activated merchant PC, online and offline.</td></tr>
             <tr><td>Planned public cloud</td><td><code>https://api.pawatax.co.ke</code></td><td>Use only once your hosted gateway is configured and reachable.</td></tr>
           </tbody></table></div>
           <p>These localhost addresses point to the computer making the request. For a deployed cloud gateway, use its actual HTTPS origin. This website is documentation; its Vercel URL does not host the fiscal API.</p>
           <p>Activating Windows Local makes the branch <code>local_sdk</code> owned. Cloud API and portal invoice creation then return <code>409 LOCAL_SIGNER_REQUIRED</code>. Always use that PC for signing, even with internet. The <Link href="/products/offline-sdk/#setup">Windows setup guide</Link> covers activation.</p>
-          <p>Use the environment that issued the device credentials. A Production device cannot become a Sandbox device by changing a URL or request field.</p>
+          <p>Use a fresh pawa_test_* key for the internal sandbox. Changing a URL or request field cannot turn a production device into a test device. Test keys cannot activate Windows Local; use a live key for its registered device.</p>
         </section>
 
         <section className="docs-section" id="api-reference">
           <h2><span className="method-label">POST</span> /v1/invoices</h2>
-          <p>The same body works with Cloud and Windows Local. Device serial, SDC, merchant and branch identity are resolved from the key; do not submit replacement fiscal credentials.</p>
+          <p>The same body structure works with Sandbox, Cloud and Windows Local. Device serial, SDC, merchant and branch identity are resolved from the key; do not submit replacement fiscal credentials.</p>
           <CodeBlock label="Invoice JSON" code={invoiceJson} />
           <div className="docs-table-scroll"><table className="docs-table"><thead><tr><th>FIELD</th><th>TYPE</th><th>RULE</th></tr></thead><tbody>{fields.map(([field, type, rule]) => <tr key={field}><td><code>{field}</code></td><td>{type}</td><td>{rule}</td></tr>)}</tbody></table></div>
-          <p>Use decimal amounts with at most two decimal places. Tax treatment follows the registered engine; a product name does not select a tax rate. On a Production device, even a sale called &quot;demo&quot; creates a fiscal invoice and advances its counter.</p>
+          <p>Use decimal amounts with at most two decimal places. In the internal sandbox, the current simulation uses B at 16% inclusive and A/C/D/E at 0%. Live tax treatment follows the registered engine; a product name does not select a tax rate. On a Production device, even a sale called &quot;demo&quot; creates a fiscal invoice and advances its counter.</p>
         </section>
 
         <section className="docs-section" id="response">
-          <h2>201 Created. Signed and saved.</h2>
+          <h2>201 Created. Inspect the environment.</h2>
           <p>This response excerpt uses fictitious values. The complete response also includes buyer, line items, totals, receipt verification URL and timestamps.</p>
-          <CodeBlock label="Cloud response excerpt" code={invoiceResponse("cloud")} />
+          <CodeBlock label="Sandbox response excerpt" code={invoiceResponse("sandbox")} />
+          <p>Sandbox signatures and numbers are simulated, <code>environment</code> is <code>sandbox</code> and <code>kra_status</code> is <code>not_applicable</code>. Live cloud returns a signed fiscal invoice pending manual KRA submission:</p>
+          <CodeBlock label="Live cloud response excerpt" code={invoiceResponse("cloud")} />
           <p><code>data.id</code> is the identifier for later reads. <code>request_id</code> identifies the retained operation. Repeating the same sale returns the original invoice with <code>replayed: true</code>. Local reads return <code>{'{"data": {...}, "synced": true}'}</code>; synced means the cloud acknowledged the import, not that KRA accepted it.</p>
         </section>
 
         <section className="docs-section" id="endpoints">
           <h2>Read history. Check status. Sync.</h2>
           <div className="docs-table-scroll"><table className="docs-table"><thead><tr><th>ROUTE</th><th>AVAILABLE ON</th><th>PURPOSE</th></tr></thead><tbody>{endpoints.map(([route, mode, purpose]) => <tr key={route}><td><code>{route}</code></td><td>{mode}</td><td>{purpose}</td></tr>)}</tbody></table></div>
-          <p>Use the API key with these routes. Local history also supports <code>q</code> search and <code>sync=all|pending|synced</code>. The cloud gateway serves its machine-readable contract at <code>/openapi.json</code>.</p>
+          <p>Sandbox supports the cloud invoice, branch and retained-request routes. Windows-only status, QR PNG and sync routes require an activated live installation. Use the API key with these routes. Local history also supports <code>q</code> search and <code>sync=all|pending|synced</code>. The cloud gateway serves its machine-readable contract at <code>/openapi.json</code>.</p>
         </section>
 
         <section className="docs-section" id="receipt-output">
           <h2>Build the receipt from issued data.</h2>
           <p>Use <code>invoice_number</code>, <code>receipt_no</code>, <code>receipt_signature</code>, totals and <code>created_at</code> from the returned invoice. Encode the returned <code>qr_url</code> as a QR image. The registered device identity is available from <code>GET /v1/branch</code>.</p>
+          <p>For sandbox invoices, use the returned PawaTax <code>qr_url</code> or Preview receipt in Sandbox invoices &amp; receipts. The test page and its scannable SVG carry the sandbox notice. The live layout example below is illustrative.</p>
           <FiscalReceiptExample />
           <p className="receipt-output-note">Illustrative receipt layout, not a fiscal document. Windows Local also retains the original QR PNG at <code>GET /v1/invoices/{'{id}'}/qr</code>. In the tray viewer, Preview receipt opens the receipt and QR directly, including offline.</p>
         </section>

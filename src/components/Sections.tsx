@@ -142,15 +142,15 @@ export function DeveloperSection() {
               <Check size={13} /> Multi-tenant
             </span>
           </div>
-          <Button href="/developers/" light>
-            Get into the docs
+          <Button href="/developers/sandbox/" light>
+            Start in the sandbox
           </Button>
           <div className="dev-footnote">
             <Code2 size={16} /> Your stack. Your checkout. Our fiscal layer.
           </div>
         </div>
         <div className="developer-code" data-reveal>
-          <ApiDemo large />
+          <ApiDemo large mode="sandbox" />
         </div>
       </div>
     </section>

@@ -22,6 +22,7 @@ export default function Footer() {
       title: "BUILD",
       links: [
         ["Developer Docs", "/developers/"],
+        ["Developer Sandbox", "/developers/sandbox/"],
         ["API Reference", "/developers/#api-reference"],
         ["Integration Guide", "/developers/#quickstart"],
         ["Contact", "/contact/"],

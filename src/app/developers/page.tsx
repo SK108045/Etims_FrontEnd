@@ -3,7 +3,7 @@ import Docs from "@/components/Docs";
 export const metadata: Metadata = {
   title: "Developer Documentation",
   description:
-    "Integrate the PawaTax Cloud and Windows Local APIs with X-API-Key, complete invoice examples, duplicate protection and synchronization guides.",
+    "Start in PawaTax Sandbox inside your user portal, then integrate Cloud or Windows Local with the same invoice JSON, X-API-Key and duplicate protection.",
 };
 export default function Developers() {
   return <Docs />;

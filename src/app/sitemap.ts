@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/products/api/",
     "/products/offline-sdk/",
     "/developers/",
+    "/developers/sandbox/",
     "/pricing/",
     "/company/",
     "/contact/",

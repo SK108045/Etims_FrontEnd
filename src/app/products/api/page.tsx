@@ -7,7 +7,7 @@ import { Features, HowItWorks } from "@/components/Sections";
 export const metadata: Metadata = {
   title: "Invoicing API",
   description:
-    "Send invoice data through a straightforward REST API and receive fiscal invoice and receipt information.",
+    "Test with pawa_test keys in your user portal, then use the same invoice JSON and REST contract with a live registered branch.",
 };
 export default function ApiPage() {
   return (
@@ -24,14 +24,14 @@ export default function ApiPage() {
         copy="One API key and your invoice JSON. PawaTax resolves the registered branch and device, signs the invoice immediately and saves it in the dashboard for review and manual KRA submission."
       >
         <div className="button-row">
-          <Button href="/developers/#quickstart">Read the quickstart</Button>
+          <Button href="/developers/sandbox/">Start in the sandbox</Button>
           <Button href="/developers/#api-reference" secondary>
             API reference
           </Button>
         </div>
       </PageHero>
       <div className="api-product-visual">
-        <ApiDemo large />
+        <ApiDemo large mode="sandbox" />
       </div>
       <section className="two-col-section container">
         <div data-reveal>
@@ -44,6 +44,12 @@ export default function ApiPage() {
           <p>
             Your application submits the sale through POST /v1/invoices. PawaTax
             signs and saves it, then returns the data your software needs for a receipt.
+          </p>
+          <p>
+            Start with a pawa_test_* key from Sandbox inside your user portal.
+            The same cloud endpoint simulates invoices without KRA calls, real
+            device registration or production counters. Replace the key with
+            pawa_live_* for an onboarded cloud branch when ready.
           </p>
           <p>
             For a Windows Local branch, use port 17500 with the same request JSON.

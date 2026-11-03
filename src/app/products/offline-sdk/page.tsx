@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { HardDrive, RefreshCw, Monitor, ShieldCheck } from "lucide-react";
 import { Button, CTA, Eyebrow, PageHero } from "@/components/ui";
 import ApiDemo, { OfflineDemo } from "@/components/ApiDemo";
@@ -54,8 +55,9 @@ export default function SDK() {
         <section className="docs-section" id="setup">
           <Eyebrow>ACTIVATE ONCE, THEN WORK OFFLINE</Eyebrow>
           <h2>From download to your first local request.</h2>
+          <div className="docs-notice"><ShieldCheck /><p><strong>Testing your HTTP integration first?</strong> Use <Link href="/developers/sandbox/">PawaTax Sandbox in your user portal</Link>. A pawa_test_* key simulates the shared invoice contract on the cloud gateway and cannot activate this Windows fiscal runtime. Windows Local requires a live key for its existing registered device.</p></div>
           <ol className="sdk-setup-steps">
-            <li><strong>Prepare the branch in the portal.</strong> Select the existing registered branch with captured desktop credentials. Open Developer Access and generate or copy its PawaTax API key.</li>
+            <li><strong>Prepare the branch in the portal.</strong> Select the existing registered branch with captured desktop credentials. Open Developer Access and generate or copy its live pawa_live_* API key.</li>
             <li><strong>Download the Windows runtime.</strong> Use Windows offline clients in Developer Access. Extract the entire ZIP and keep its dependencies together. This website does not host the runtime download.</li>
             <li><strong>Start PawaTaxLocal.exe.</strong> Accept the Windows administrator prompt to install/start the service. The viewer starts hidden in the tray; open it through Open PawaTax Desktop. There is no separate public desktop EXE.</li>
             <li><strong>Activate with the API key.</strong> In a terminal in the extracted folder, run the command below and paste the branch key into its hidden prompt. No pairing code, setup key or new KRA device registration is needed.</li>

@@ -3,12 +3,13 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 
 const topics = [
+  { id: "sandbox", title: "Developer sandbox", description: "pawa_test keys, user portal setup, no KRA, test receipts and going live." },
   { id: "environments", title: "Cloud or Windows Local", description: "Base URLs, port 17400, port 17500 and signing ownership." },
   { id: "endpoints", title: "Read and sync", description: "Invoice history, branch, local status, QR and synchronization routes." },
   {
     id: "quickstart",
     title: "Quickstart",
-    description: "Start with the fiscal invoicing workflow.",
+    description: "Create a sandbox key and send your first simulated invoice.",
   },
   {
     id: "authentication",

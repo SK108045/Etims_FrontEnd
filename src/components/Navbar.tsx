@@ -112,10 +112,16 @@ export default function Navbar() {
               )}
             </div>
             <Link
-              className={pathname.startsWith("/developers") ? "active" : ""}
+              className={pathname === "/developers/" ? "active" : ""}
               href="/developers/"
             >
               Developers
+            </Link>
+            <Link
+              className={pathname.startsWith("/developers/sandbox") ? "active" : ""}
+              href="/developers/sandbox/"
+            >
+              Sandbox
             </Link>
             <Link
               className={pathname === "/pricing/" ? "active" : ""}
