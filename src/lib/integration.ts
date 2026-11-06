@@ -1,5 +1,8 @@
 // Shared examples mirror DEVELOPER_API.md and the Windows local API contract.
 // All identifiers are illustrative. This website never sends fiscal requests.
+import taxRegistry from "./tax-codes.json";
+export const taxCodes = taxRegistry.codes;
+export type TaxCode = "A" | "B" | "C" | "D" | "E";
 export type SigningMode = "cloud" | "local" | "sandbox";
 export const baseUrls = {
   cloud: "http://127.0.0.1:17400",
@@ -13,11 +16,12 @@ export const invoice = {
   currency: "KES",
   customer: { pin: "NA", name: "Walk-In Customer" },
   items: [{
-    item_code: "ITEM-001",
+    item_code: "1",
     name: "Paint brush",
     quantity: 1,
     unit_price: 250,
     tax_code: "A",
+    classification_code: "99010000",
   }],
   payment_method: "cash",
 };
@@ -28,9 +32,10 @@ export const sandboxInvoice = {
   items: invoice.items.map(item => ({ ...item, tax_code: "B" })),
 };
 export const sandboxInvoiceJson = JSON.stringify(sandboxInvoice, null, 2);
-export function invoiceExample(language: Language, mode: SigningMode) {
+export function invoiceExample(language: Language, mode: SigningMode, taxCode?: TaxCode) {
   const url = `${baseUrls[mode]}/v1/invoices`;
-  const payload = mode === "sandbox" ? sandboxInvoiceJson : invoiceJson;
+  const source = mode === "sandbox" ? sandboxInvoice : invoice;
+  const payload = JSON.stringify(taxCode ? { ...source, external_id: `${source.external_id}-${taxCode}`, items: source.items.map(item => ({ ...item, tax_code: taxCode })) } : source, null, 2);
   const key = mode === "sandbox" ? "pawa_test_YOUR_API_KEY" : "YOUR_API_KEY";
   switch (language) {
     case "cURL":
@@ -56,9 +61,9 @@ export function invoiceResponse(mode: SigningMode) {
       kra_status: mode === "sandbox" ? "not_applicable" : "pending_submission",
       source: mode === "local" ? "desktop" : "api",
       environment: mode === "sandbox" ? "sandbox" : "prod",
+      tot_amt: 250,
+      tax_amt: mode === "sandbox" ? 34.48 : 0,
       ...(mode === "sandbox" ? {
-        tot_amt: 250,
-        tax_amt: 34.48,
         qr_url: `${baseUrls.sandbox}/sandbox/receipts/SANDBOX_RECEIPT_TOKEN`,
         kra_result_code: null,
         kra_result_msg: null,
@@ -73,3 +78,28 @@ export function invoiceResponse(mode: SigningMode) {
 export const activationCommand = '.\\PawaTaxLocal.exe activate --cloud-url "http://127.0.0.1:17400"';
 export const localStatusCommand = 'curl.exe --request GET "http://127.0.0.1:17500/v1/status" --header "X-API-Key: YOUR_API_KEY"';
 export const localSyncCommand = 'curl.exe --request POST "http://127.0.0.1:17500/v1/sync" --header "X-API-Key: YOUR_API_KEY" --header "Content-Type: application/json" --data-binary "{}"';
+
+export const webhookVerification = `import hashlib
+import hmac
+import json
+import time
+
+def verify_pawatax(raw_body: bytes, headers, signing_secret: str):
+    timestamp = headers["PawaTax-Timestamp"]
+    if abs(time.time() - int(timestamp)) > 300:
+        raise ValueError("Expired webhook timestamp")
+    expected = "v1=" + hmac.new(
+        signing_secret.encode("utf-8"),
+        timestamp.encode("ascii") + b"." + raw_body,
+        hashlib.sha256,
+    ).hexdigest()
+    if not hmac.compare_digest(expected, headers["PawaTax-Signature"]):
+        raise ValueError("Invalid webhook signature")
+    event = json.loads(raw_body)
+    if event["id"] != headers["PawaTax-Event-Id"]:
+        raise ValueError("Event ID mismatch")
+    return event`;
+
+export const product = { name: "Paint brush", classification_code: "99010000", tax_code: "B", quantity_unit: "NO", package_unit: "OU" };
+export const productCommand = `curl --request POST "http://127.0.0.1:17400/v1/products" \\\n  --header "X-API-Key: pawa_test_YOUR_API_KEY" \\\n  --header "Content-Type: application/json" \\\n  --data-raw '${JSON.stringify(product, null, 2)}'`;
+export const policyCommand = `curl --request POST "http://127.0.0.1:17400/v1/branch/classification-policy" \\\n  --header "X-API-Key: pawa_test_YOUR_API_KEY" \\\n  --header "Content-Type: application/json" \\\n  --data-raw '{"mode":"use_default","classification_code":"99010000"}'`;

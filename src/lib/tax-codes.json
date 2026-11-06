@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "price_basis": "tax_inclusive",
+  "codes": [
+    {"code": "A", "name": "Exempt", "rate": 0, "supported": true},
+    {"code": "B", "name": "16% VAT", "rate": 16, "supported": true},
+    {"code": "C", "name": "Zero-rated", "rate": 0, "supported": true},
+    {"code": "D", "name": "Non-VAT", "rate": 0, "supported": true},
+    {"code": "E", "name": "8% VAT", "rate": 8, "supported": true}
+  ]
+}

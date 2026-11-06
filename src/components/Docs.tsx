@@ -4,18 +4,21 @@ import ApiDemo from "./ApiDemo";
 import CodeBlock from "./CodeBlock";
 import FiscalReceiptExample from "./FiscalReceiptExample";
 import DocsSearch from "./DocsSearch";
-import { invoiceJson, invoiceResponse } from "@/lib/integration";
+import TaxCodeReference from "./TaxCodeReference";
+import { invoiceExample, invoiceJson, invoiceResponse, productCommand, policyCommand, webhookVerification } from "@/lib/integration";
 
 const fields = [
   ["external_id", "string, required", "Unique sale reference per branch, up to 100 characters. Reuse it for retries."],
   ["currency", "string", "KES. No currency conversion is performed."],
   ["customer", "object", "Customer name and PIN; use NA for a walk-in customer without a PIN."],
   ["items", "array, required", "1 to 500 invoice lines."],
-  ["items[].item_code", "string, required", "Your product or service code."],
+  ["items[].item_code", "string, required", "Exact branch-scoped SKU, including a numeric SKU returned by POST /v1/products."],
   ["items[].name", "string, required", "Product or service description."],
   ["items[].quantity", "number, required", "Positive quantity, up to six decimal places."],
   ["items[].unit_price", "number, required", "Non-negative unit price, up to two decimal places."],
-  ["items[].tax_code", "string", "A to E, default A. Interpreted by the registered fiscal engine."],
+  ["items[].tax_code", "string, optional", "A Exempt; B 16% VAT; C Zero-rated; D Non-VAT; E 8% VAT. Explicit code, then saved SKU tax, then A."],
+  ["items[].classification_code", "string, optional", "Enabled KRA category: explicit code, saved SKU, configured default, otherwise classification required."],
+  ["items[].quantity_unit / package_unit", "string, optional", "KRA unit codes, such as NO / OU. Saved SKU units are reused when omitted."],
   ["items[].discount_rate / discount_amount", "number, optional", "Use a rate from 0 to 100 or an amount, not both."],
   ["payment_method", "string", "cash, credit, cash/credit, bank_check, debit_card, mobile_money or other."],
 ];
@@ -28,12 +31,24 @@ const endpoints = [
   ["GET /v1/status", "Local", "Read activation, pending_sync, recovery_pending and last_sync_error."],
   ["GET /v1/invoices/{id}/qr", "Local", "Read the original receipt QR image as PNG."],
   ["POST /v1/sync", "Local", "Send {} to attempt cloud sync now. Inspect both synced and pending counts."],
+  ["GET /v1/reference/tax-codes", "Cloud + Sandbox + Local", "Enabled tax names, rates and registry version."],
+  ["GET /v1/reference/item-classifications?q=paint%20brush", "Cloud + Sandbox + Local", "Search valid KRA classifications."],
+  ["GET /v1/reference/item-units", "Cloud + Sandbox + Local", "Read valid quantity and package unit codes."],
+  ["GET /v1/products?q=brush&limit=100&offset=0", "Cloud + Sandbox + Local", "Read saved SKU mappings for the key's exact branch/workspace."],
+  ["POST /v1/products", "Cloud + Sandbox + Local", "Create/update a product; HTTP 200. Omit item_code to allocate a numeric SKU."],
+  ["GET /v1/products/next-sku", "Cloud + Sandbox + Local", "Preview the next number; reserved: false. Final allocation occurs on save."],
+  ["GET / POST /v1/branch/classification-policy", "Cloud + Sandbox + Local", "Read or configure this branch's default/strict classification policy."],
+  ["GET /v1/request-logs", "Cloud + Sandbox + Local", "Read sanitized API activity for the assigned branch."],
 ];
 const errors = [
   ["401", "Invalid or revoked cloud key, or a key not accepted by the local installation."],
   ["409 IDEMPOTENCY_CONFLICT", "The reference was already used with different invoice details."],
   ["409 LOCAL_SIGNER_REQUIRED", "This branch signs only on its activated Windows PC. Use port 17500."],
   ["415 / 422", "JSON content type required / invoice validation failed."],
+  ["422 ITEM_CLASSIFICATION_REQUIRED", "Select a category or configure an automatic branch default."],
+  ["422 ITEM_CLASSIFICATION_REVIEW_REQUIRED", "Correct a legacy SKU mapping before issuing a production invoice."],
+  ["409 LOCAL_SKU_ALLOCATION_REQUIRED", "Allocate automatic product SKUs on the paired Windows PC, not the cloud."],
+  ["503 TAX_CONSISTENCY_REVIEW_REQUIRED", "Retained fiscal totals disagree. Keep the reference; review the existing operation without re-signing."],
   ["428", "The branch needs verified desktop credentials."],
   ["429", "Cloud per-key rate limit exceeded; default 60 requests per minute."],
   ["503", "Service unavailable or signing outcome uncertain. Retain the reference and request ID."],
@@ -53,6 +68,11 @@ export default function Docs() {
         <div className="docs-label">API REFERENCE</div>
         <a href="#api-reference"><Braces /> Create an invoice</a>
         <a href="#response"><FileJson /> Invoice response</a>
+        <a href="#products"><Box /> Products &amp; classification</a>
+        <a href="#tax-codes"><Receipt /> Tax codes A–E</a>
+        <a href="#kra-submission"><Receipt /> KRA submission queue</a>
+        <a href="#webhooks"><Code2 /> Signed webhooks</a>
+        <a href="#usage"><FileJson /> Logs &amp; usage</a>
         <a href="#endpoints"><Braces /> Read and sync</a>
         <a href="#receipt-output"><Receipt /> Receipt output</a>
         <a href="#integration-notes"><Code2 /> Errors and retries</a>
@@ -63,7 +83,7 @@ export default function Docs() {
         <div className="docs-breadcrumb">Documentation / Integration guide</div>
         <h1>Your API key. Your invoice.</h1>
         <p className="docs-lead">Send one JSON request from your POS, ERP or backend. Your API key resolves the assigned branch and device. Start with a simulated sandbox invoice, then use the same request format with a live cloud or Windows Local branch.</p>
-        <div className="docs-notice"><FileJson /><p><strong>Use a test key while building.</strong> Sandbox returns simulated results with <code>kra_status: not_applicable</code>. With a live key, HTTP 201 means signed and saved, separate from KRA acceptance. The live invoice appears in the dashboard with <code>kra_status: pending_submission</code>. A portal user reviews it and chooses Send to KRA.</p></div>
+        <div className="docs-notice"><FileJson /><p><strong>Use a test key while building.</strong> Sandbox returns simulated results with <code>kra_status: not_applicable</code>. Live HTTP 201 means signed and saved, separate from KRA acceptance. Submission is manual by default; a branch can explicitly enable automatic KRA submission.</p></div>
 
         <section className="docs-section" id="quickstart">
           <h2>Your first invoice.</h2>
@@ -110,16 +130,63 @@ export default function Docs() {
           <p>The same body structure works with Sandbox, Cloud and Windows Local. Device serial, SDC, merchant and branch identity are resolved from the key; do not submit replacement fiscal credentials.</p>
           <CodeBlock label="Invoice JSON" code={invoiceJson} />
           <div className="docs-table-scroll"><table className="docs-table"><thead><tr><th>FIELD</th><th>TYPE</th><th>RULE</th></tr></thead><tbody>{fields.map(([field, type, rule]) => <tr key={field}><td><code>{field}</code></td><td>{type}</td><td>{rule}</td></tr>)}</tbody></table></div>
-          <p>Use decimal amounts with at most two decimal places. In the internal sandbox, the current simulation uses B at 16% inclusive and A/C/D/E at 0%. Live tax treatment follows the registered engine; a product name does not select a tax rate. On a Production device, even a sale called &quot;demo&quot; creates a fiscal invoice and advances its counter.</p>
+          <p>Prices include VAT. The example explicitly classifies a new SKU as General Goods so it works before a default is configured. Once the SKU or automatic default is saved, classification_code can be omitted. On a production device, even a sale called &quot;demo&quot; creates a fiscal invoice and advances its counter.</p>
         </section>
 
         <section className="docs-section" id="response">
           <h2>201 Created. Inspect the environment.</h2>
           <p>This response excerpt uses fictitious values. The complete response also includes buyer, line items, totals, receipt verification URL and timestamps.</p>
           <CodeBlock label="Sandbox response excerpt" code={invoiceResponse("sandbox")} />
-          <p>Sandbox signatures and numbers are simulated, <code>environment</code> is <code>sandbox</code> and <code>kra_status</code> is <code>not_applicable</code>. Live cloud returns a signed fiscal invoice pending manual KRA submission:</p>
+          <p>Sandbox signatures and numbers are simulated, <code>environment</code> is <code>sandbox</code> and <code>kra_status</code> is <code>not_applicable</code>. Its B-coded example includes VAT 34.48. The live A-coded example below is exempt and returns VAT zero:</p>
           <CodeBlock label="Live cloud response excerpt" code={invoiceResponse("cloud")} />
           <p><code>data.id</code> is the identifier for later reads. <code>request_id</code> identifies the retained operation. Repeating the same sale returns the original invoice with <code>replayed: true</code>. Local reads return <code>{'{"data": {...}, "synced": true}'}</code>; synced means the cloud acknowledged the import, not that KRA accepted it.</p>
+        </section>
+
+        <section className="docs-section" id="products">
+          <h2>Save the SKU. Reuse its classification.</h2>
+          <p><code>item_code</code> identifies the product within one branch/workspace. Names never identify SKUs. Use <code>POST /v1/products</code> to create or update a mapping; it does not issue an invoice or consume a fiscal number.</p>
+          <CodeBlock label="Bash / create a product with an automatic numeric SKU" code={productCommand} />
+          <p>HTTP 200 returns the saved product and its <code>item_code</code>. Omit that field to allocate 1, 2, 3… server-side, independently per branch or sandbox workspace. Custom codes remain supported. Existing SKUs are never renumbered. Use the returned code on invoices; the next-SKU preview does not reserve it.</p>
+          <p>In the portal, <strong>Products / Items</strong> reads the same backend store. Re-enter the page or press Refresh after an API update, and choose the workspace assigned to that key. A branch named &quot;SANDBOX&quot; in the live branch list is separate from the internal sandbox workspace.</p>
+          <h3>Choose defaults or require a category.</h3>
+          <p>Quick defaults are <strong>General Goods 99010000</strong>, <strong>General Services 99020000</strong> and <strong>Goods or Services 99030000</strong>. Search <code>GET /v1/reference/item-classifications?q=paint%20brush</code> for a more specific category.</p>
+          <CodeBlock label="Bash / use General Goods automatically for new SKUs" code={policyCommand} />
+          <p>Use <code>{'{"mode":"require_classification"}'}</code> for strict mode. Resolution stays <strong>explicit classification → saved SKU → enabled default → ITEM_CLASSIFICATION_REQUIRED</strong>. Strict mode ignores the default for new SKUs. Legacy mappings marked Needs classification review require an explicit correction before production use; signed history is unchanged.</p>
+          <p>A product save requires a valid <code>classification_code</code>. Optional product fields are <code>tax_code</code>, <code>quantity_unit</code> and <code>package_unit</code>. Invoice tax overrides the saved SKU tax; otherwise its tax and units are reused. Categories do not determine tax treatment.</p>
+          <p>For local-owned branches, allocate automatic SKUs at port 17500. Cloud changes with explicit SKUs and policies reach the paired PC through configuration sync; offline invoices use the last received configuration.</p>
+        </section>
+
+        <section className="docs-section" id="tax-codes">
+          <h2>Tax codes A–E. One verified model.</h2>
+          <TaxCodeReference />
+          <p><strong>E is enabled as 8% VAT</strong> in Cloud, Sandbox and Windows Local. B and E prices include VAT. Line tax is rounded to two decimals using midpoint-to-even rounding before summation; discounts reduce the inclusive amount first. Fetch the current registry with <code>GET /v1/reference/tax-codes</code>.</p>
+          <CodeBlock label="Bash / sandbox E example — KES 250 total, KES 18.52 VAT" code={invoiceExample("cURL", "sandbox", "E")} />
+          <p>Use issued <code>tot_amt</code> and <code>tax_amt</code> for receipts and accounting. Native signed totals are authoritative; do not calculate a replacement from the letter. Mismatches require review. Existing idempotent responses remain unchanged, and the portal separately flags historical reporting discrepancies without changing signed invoices.</p>
+        </section>
+
+        <section className="docs-section" id="kra-submission">
+          <h2>Queue KRA submission separately from signing.</h2>
+          <p>In Invoices &amp; Receipts, select pending invoices and choose Submit selected to KRA. For API submission, use the production branch key on the cloud gateway. Windows synchronization imports the original signed invoice first.</p>
+          <CodeBlock label="POST /v1/kra/batches — HTTP 202 queues work" code={'{\n  "invoice_ids": ["INVOICE_ID_FROM_RESPONSE"],\n  "confirm": true\n}'} />
+          <p>Read progress with <code>GET /v1/kra/batches</code> and <code>GET /v1/kra/batches/{'{id}'}</code>. Select earlier pending invoices too; the queue preserves fiscal order per branch. Other branches can continue if one is blocked. Temporary network/429/5xx failures retry across days and restarts, with waits capped at one hour plus jitter. Business rejections and changed artifacts require review.</p>
+          <CodeBlock label="POST /v1/branch/submission-mode — explicit opt-in" code={'{\n  "mode": "automatic",\n  "confirm": true\n}'} />
+          <p>Automatic mode applies to pending and future completed production invoices, including Windows imports. Return to <code>{'{"mode":"manual"}'}</code> to stop automatic enqueueing; already-authorized jobs continue. <code>POST /v1/kra/batches/{'{id}'}/retry</code> with <code>{'{"confirm":true}'}</code> retries eligible retained jobs without re-signing. Internal sandbox rejects KRA submission and automatic mode.</p>
+          <p>Keep <code>status: signed</code> separate from <code>kra_status</code>: pending_submission, queued, transmitting, retrying, partial_receipt_pending, transmitted, failed or needs_review. Sandbox uses not_applicable. Only acknowledged submission becomes transmitted; a local <code>synced: true</code> is a cloud import acknowledgement.</p>
+        </section>
+
+        <section className="docs-section" id="webhooks">
+          <h2>Receive signed invoice events.</h2>
+          <p>Register <code>POST /v1/webhooks</code> with <code>{'{"url":"https://merchant.example/pawatax"}'}</code> on the cloud gateway, or use Developer Access. Save its signing secret when first returned; endpoint lists and logs exclude secrets.</p>
+          <p>Events are <code>invoice.signed</code>, <code>invoice.kra_queued</code>, <code>invoice.kra_transmitted</code> and <code>invoice.kra_failed</code>. Each includes id, type, timestamp, api_version, invoice_id, merchant_pin, tenant_id, branch_id, environment and status data. Windows signed events arrive after cloud import; sandbox signed events stay simulated.</p>
+          <CodeBlock label="Python / verify the exact raw HTTP body before processing" code={webhookVerification} />
+          <p>Reject stale timestamps (for example over five minutes), use a constant-time signature comparison and deduplicate <code>event.id</code> in the same transaction as processing. Return 2xx after durable acceptance. Delivery is at least once and ordered per endpoint. Failed deliveries retry up to 12 attempts; inspect <code>GET /v1/webhooks/deliveries</code> and manually retry retained failures with <code>POST /v1/webhooks/{'{delivery_id}'}/retry</code> and <code>{'{}'}</code>. URLs must be public HTTPS; private/KRA targets and redirects are blocked.</p>
+        </section>
+
+        <section className="docs-section" id="usage">
+          <h2>Inspect logs and production usage.</h2>
+          <p><code>GET /v1/request-logs</code> shows request ID, endpoint, status, latency, environment and sanitized request/response data. Keys, credentials and webhook secrets are excluded. Logs are also available in Developer Access and Windows Local.</p>
+          <p><code>GET /v1/usage</code> returns account-wide free allowance and monthly estimates; <code>GET /v1/usage/records?limit=50&amp;offset=0</code> returns auditable records for the key&apos;s branch. Optional <code>period=YYYY-MM</code> selects a Nairobi billing month. These usage routes run on the cloud gateway.</p>
+          <p>The first <strong>10 successful production invoices per account, across all branches, are free for the account lifetime</strong>. Further successful invoices cost <strong>KES 1.50 each</strong>. Sandbox, rejected/failed requests and duplicate/idempotent retries do not count. Windows usage appears after sync, with the original issue month. KRA retries never create another charge. Amounts are estimates; payment collection is separate.</p>
         </section>
 
         <section className="docs-section" id="endpoints">

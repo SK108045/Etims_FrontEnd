@@ -4,6 +4,7 @@ import { HardDrive, RefreshCw, Monitor, ShieldCheck } from "lucide-react";
 import { Button, CTA, Eyebrow, PageHero } from "@/components/ui";
 import ApiDemo, { OfflineDemo } from "@/components/ApiDemo";
 import CodeBlock from "@/components/CodeBlock";
+import TaxCodeReference from "@/components/TaxCodeReference";
 import { activationCommand, localStatusCommand, localSyncCommand } from "@/lib/integration";
 
 export const metadata: Metadata = {
@@ -18,6 +19,11 @@ const routes = [
   ["GET /v1/invoices/{id}/qr", "Retrieve the original QR PNG."],
   ["GET /v1/branch", "Inspect the bound merchant, branch, registered device and environment."],
   ["GET /v1/status", "Inspect activation, queue counts and recovery state."],
+  ["GET /v1/reference/tax-codes", "Read the shared A/B/C/D/E names and rates."],
+  ["GET /v1/reference/item-classifications?q=paint%20brush", "Search the valid category catalog offline."],
+  ["GET / POST /v1/products", "Read saved SKU mappings or create/update a product. Omit item_code to allocate a number on this PC."],
+  ["GET /v1/products/next-sku", "Preview the next branch SKU; final allocation happens on product save."],
+  ["GET / POST /v1/branch/classification-policy", "Read or set the branch default/strict policy."],
   ["POST /v1/sync", "Send {} to attempt queued cloud synchronization immediately."],
 ];
 export default function SDK() {
@@ -47,7 +53,7 @@ export default function SDK() {
           {[
             { icon: Monitor, title: "One installation, one existing device", text: "The portal supplies merchant, branch, serial, model, SDC and environment. The downloaded PC does not create another fiscal identity." },
             { icon: HardDrive, title: "Sign and retain locally", text: "Protected credentials, fiscal counters, invoice journals and duplicate protection stay on the merchant PC." },
-            { icon: RefreshCw, title: "Sync the signed result", text: "Already-signed invoices are imported into the dashboard. The cloud never signs those invoices again; KRA submission stays a manual portal action." },
+            { icon: RefreshCw, title: "Sync the signed result", text: "Already-signed invoices are imported into the dashboard. The cloud never signs those invoices again; KRA submission follows the branch's manual or explicitly enabled automatic cloud mode." },
           ].map(({ icon: Icon, title, text }) => <div className="principle" key={title} data-reveal><Icon /><div><h3>{title}</h3><p>{text}</p></div></div>)}
         </div>
       </section>
@@ -76,13 +82,20 @@ export default function SDK() {
           <CodeBlock label="Example status / identifiers and counts vary" code={'{\n  "service": "PawaTax Windows Local API",\n  "paired": true,\n  "installation_id": "YOUR_INSTALLATION_ID",\n  "signing_owner": "local_sdk",\n  "invoices": 3,\n  "pending_sync": 2,\n  "recovery_pending": 0,\n  "last_sync_error": null,\n  "automatic_sync": true\n}'} />
           <p><code>paired: true</code> means activation and its initial confirmation completed. <code>pending_sync</code> counts completed invoices awaiting cloud acknowledgement. <code>recovery_pending</code> counts interrupted operations. The local invoice count is separate from the device fiscal counter.</p>
         </section>
+        <section className="docs-section" id="products-tax">
+          <h2>Local products. The same tax rules.</h2>
+          <TaxCodeReference />
+          <p>E is enabled as 8% inclusive VAT: gross KES 250 contains KES 18.52 VAT. Use returned signed tax totals; mismatches are retained for review. A/B/C/D semantics are unchanged and historical signed results are never recomputed.</p>
+          <p>Classifications resolve explicit code, saved SKU, automatic default, then ITEM_CLASSIFICATION_REQUIRED. General Goods 99010000, General Services 99020000 and Goods or Services 99030000 are quick defaults. Strict mode requires a classification for each unknown SKU; legacy mappings needing review require correction.</p>
+          <p>Product saves return HTTP 200 and do not consume fiscal invoice numbers. Automatic numeric SKUs are allocated safely on this paired PC, independently for its branch. Cloud requests without item_code return LOCAL_SKU_ALLOCATION_REQUIRED for a local-owned branch. Explicit SKU and policy changes from the portal reach this PC through synchronization; offline signing uses the last received settings. See <Link href="/developers/#products">product API examples</Link>.</p>
+        </section>
         <section className="docs-section" id="sync">
           <h2>Offline first. Automatic cloud retry.</h2>
           <p>Invoices are signed and saved before being queued. The background worker checks approximately every five seconds and processes up to 25 queued invoices per cycle, in sequence. Failed jobs retain an exponential retry delay capped at one hour, plus a little jitter. The queue and retry schedule survive restarts.</p>
           <p>Reconnect does not clear an existing retry delay. For an immediate attempt, use Sync now in the tray viewer or send this request:</p>
           <CodeBlock label="Attempt synchronization now" code={localSyncCommand} />
           <p>The result contains <code>synced</code> and <code>pending</code> counts. HTTP 200 alone does not mean the queue is empty. Check <code>last_sync_error</code> in status if transfers remain pending. A local invoice read returning <code>synced: true</code> means the web app acknowledged it; it does not mean KRA accepted it.</p>
-          <p>The runtime signs transfer proofs and imports retained results through <code>POST /v1/desktop/sync</code>. Your POS does not call this internal cloud endpoint or resend invoices to cloud invoice creation. Review synchronized invoices and choose Send to KRA in the dashboard.</p>
+          <p>The runtime signs transfer proofs and imports retained results through <code>POST /v1/desktop/sync</code>. Your POS does not call this internal cloud endpoint or resend invoices to cloud invoice creation. Review synchronized invoices in the dashboard, or explicitly enable automatic KRA submission for the branch. Cloud synchronization and KRA submission have separate queues and acknowledgements.</p>
         </section>
         <section className="docs-section" id="recovery">
           <h2>Keep the reference. Keep the installation.</h2>

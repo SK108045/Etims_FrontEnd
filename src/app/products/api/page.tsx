@@ -21,7 +21,7 @@ export default function ApiPage() {
             <span>To a fiscal invoice.</span>
           </>
         }
-        copy="One API key and your invoice JSON. PawaTax resolves the registered branch and device, signs the invoice immediately and saves it in the dashboard for review and manual KRA submission."
+        copy="One API key and your invoice JSON. PawaTax resolves the registered branch and device, signs the invoice immediately and saves it in the dashboard. Submit to KRA manually or enable automatic submission for the branch."
       >
         <div className="button-row">
           <Button href="/developers/sandbox/">Start in the sandbox</Button>
@@ -114,6 +114,16 @@ export default function ApiPage() {
           </div>
         </div>
         <FiscalReceiptExample />
+      </section>
+      <section className="container docs-section">
+        <h2>Products, tax and state changes.</h2>
+        <p>Save branch-scoped products with numeric or custom SKUs. Use a General Goods default for new SKUs or require a specific classification. The shared A–E model includes E at 8% VAT; KES 250 contains KES 18.52 VAT. Signed totals remain authoritative across Cloud, Sandbox and Windows Local.</p>
+        <div className="button-row">
+          <Button href="/developers/#products" secondary>Products &amp; classification</Button>
+          <Button href="/developers/#tax-codes" secondary>Tax code reference</Button>
+          <Button href="/developers/#webhooks" secondary>Signed webhooks</Button>
+        </div>
+        <p>Ordered KRA batches, optional automatic submission, sanitized request logs and production usage are covered in the <a href="/developers/#kra-submission">V1 integration guide</a>.</p>
       </section>
       <Features />
       <HowItWorks />

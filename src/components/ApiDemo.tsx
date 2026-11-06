@@ -319,7 +319,7 @@ export function OfflineDemo() {
       </div>
       <p className="small-note">
         Illustration only: no fiscal invoices are created or sent. Real sync retries
-        use backoff; cloud acknowledgement is separate from manual KRA submission.
+        use backoff; cloud acknowledgement is separate from KRA submission, whether manual or automatic.
       </p>
     </div>
   );

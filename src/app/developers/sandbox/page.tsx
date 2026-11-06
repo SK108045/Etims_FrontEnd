@@ -4,7 +4,8 @@ import { ArrowUpRight, Box } from "lucide-react";
 import { Button, PageHero } from "@/components/ui";
 import ApiDemo from "@/components/ApiDemo";
 import CodeBlock from "@/components/CodeBlock";
-import { invoiceResponse } from "@/lib/integration";
+import TaxCodeReference from "@/components/TaxCodeReference";
+import { invoiceResponse, invoiceExample } from "@/lib/integration";
 
 export const metadata: Metadata = {
   title: "Developer Sandbox",
@@ -74,7 +75,10 @@ export default function SandboxGuide() {
         <section className="docs-section" id="validation">
           <h2>Exercise validation and tax calculations.</h2>
           <p>Use KES, 1 to 500 item lines, positive quantities with up to six decimal places and non-negative unit prices with up to two decimal places. An item can have a discount rate or discount amount. Supported tax codes are A through E.</p>
-          <p>The current simulation uses <strong>B at 16% inclusive</strong> and <strong>A, C, D and E at 0%</strong>. The example returns KES 250.00 total and KES 34.48 included test tax. This test model is for integration checks; live tax treatment follows the registered fiscal engine and device configuration.</p>
+          <TaxCodeReference />
+          <p>Sandbox uses the same tax meanings as Cloud and Windows Local: B includes 16% VAT, E includes 8% VAT, and A/C/D have VAT zero. At gross KES 250, B VAT is KES 34.48 and E VAT is KES 18.52. Taxes round per line before summation. The first example uses B.</p>
+          <CodeBlock label="Bash / test E at 8% inclusive VAT" code={invoiceExample("cURL", "sandbox", "E")} />
+          <p>The examples explicitly set General Goods classification 99010000. Configure an automatic default or save a SKU in <Link href="/developers/#products">Products / Items</Link> to omit classification_code on subsequent invoices. An internal sandbox product is visible only in that sandbox workspace; it is separate from live branches.</p>
           <p>Try an invalid tax code or a zero quantity to check your validation handling. See the <Link href="/developers/#api-reference">shared request field reference</Link> for the full contract.</p>
         </section>
 
@@ -102,7 +106,7 @@ export default function SandboxGuide() {
         <section className="docs-section" id="go-live">
           <h2>Switch the key when you are ready.</h2>
           <p>For a cloud-owned live branch, complete merchant/device onboarding and capture its verified credentials. Generate its <code>pawa_live_*</code> key in Developer Access. Replace the test key in your application configuration and use the actual cloud gateway origin. Keep the invoice path, headers and JSON structure.</p>
-          <p>Live HTTP 201 means signed and saved, with <code>kra_status: pending_submission</code>. Review the invoice in the portal and choose Send to KRA when needed. Creating live invoices consumes real fiscal counters, even if the item is called a demo.</p>
+          <p>Live HTTP 201 means signed and saved, with <code>kra_status: pending_submission</code>. Review the invoice in the portal or explicitly enable automatic submission for the production branch. Sandbox itself never submits to KRA. Creating live invoices consumes real fiscal counters, even if the item is called a demo.</p>
           <p><strong>Windows Local uses live device credentials.</strong> A <code>pawa_test_*</code> key cannot activate the Windows runtime or use desktop sync. Test the shared HTTP integration here first. A live branch activated on Windows remains <code>local_sdk</code> owned and must sign on that PC at port 17500, even while connected.</p>
           <p>If you have an older key originally issued for a KRA Sandbox device, create a fresh internal sandbox key using the portal steps above. Those older keys cannot reach a real device through the developer sandbox.</p>
           <div className="docs-related">
